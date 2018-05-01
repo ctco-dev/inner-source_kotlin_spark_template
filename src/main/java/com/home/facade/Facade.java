@@ -1,34 +1,47 @@
 package com.home.facade;
 
+import com.home.domain.DataRepository;
 import com.home.dto.Aggregate;
 import com.home.dto.Data;
-import com.home.integration.Client;
+import com.home.integration.RemoteDataClient;
 import spark.Request;
 import spark.Response;
 
+import javax.inject.Inject;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class Facade {
 
-    private final ExecutorService executorService = Executors.newFixedThreadPool(20);
+    @Inject
+    ExecutorService executorService;
+    @Inject
+    DataRepository dataRepository;
+    @Inject
+    RemoteDataClient remoteDataClient;
+
 
     public Data getData(Request request, Response response) {
         response.type("application/json");
 
-        String id = request.params("id");
-        return new Data("data" + id);
+        Long id = Long.parseLong(request.params("id"));
+        return dataRepository.read(id);
     }
 
+    public Data update(Request request, Response response) {
+        response.type("application/json");
+
+        Long id = Long.parseLong(request.params("id"));
+        return dataRepository.read(id);
+    }
 
     public Aggregate getAggregate(Request request, Response response) throws ExecutionException, InterruptedException {
-        Client client = new Client();
-        Future<Data> data1Future = executorService.submit(() -> client.getData("a", 600));
-        Data data2 = client.getData("b", 600);
+
+        Future<Data> data1Future = executorService.submit(() -> remoteDataClient.getRemoteData("1", 600));
+        Data data2 = remoteDataClient.getRemoteData("2", 600);
 
         List<Data> results = Arrays.asList(data1Future.get(), data2);
         return new Aggregate(results);

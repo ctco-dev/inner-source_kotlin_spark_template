@@ -8,23 +8,20 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
+import javax.inject.Inject;
 import java.io.IOException;
 
 @Slf4j
-public class Client {
+public class RemoteDataClient {
 
     private final DataService service;
 
-    public Client() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://localhost:4567/")
-                .addConverterFactory(JacksonConverterFactory.create())
-                .build();
-
+    @Inject
+    public RemoteDataClient(Retrofit retrofit) {
         this.service = retrofit.create(DataService.class);
     }
 
-    public Data getData(@NonNull String id, long sleep){
+    public Data getRemoteData(@NonNull String id, long sleep){
         log.info("data requested: {}", id);
         try {
             Thread.sleep(sleep);

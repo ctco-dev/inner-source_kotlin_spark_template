@@ -19,7 +19,7 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.4.0'
     compile group: 'com.squareup.retrofit2', name: 'converter-jackson', version: '2.4.0'
     compile 'org.projectlombok:lombok:1.16.20'
-    compile group: 'com.google.dagger', name: 'dagger', version: '2.15'
+    compile group: 'com.google.inject', name: 'guice', version: '4.2.0'
 
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.5'
     compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'

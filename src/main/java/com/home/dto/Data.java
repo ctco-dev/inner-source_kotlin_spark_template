@@ -11,5 +11,6 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Data {
+    Long id;
     String content;
 }
