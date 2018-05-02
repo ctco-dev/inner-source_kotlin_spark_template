@@ -3,6 +3,7 @@ package com.home.domain;
 import com.home.dto.Data;
 
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class DataRepository {
@@ -15,10 +16,12 @@ public class DataRepository {
     }
 
     public void update(Data data) {
-        create(data);
+        store.put(data.getId(), data);
     }
 
     public void create(Data data) {
+        Random random = new Random();
+        data.setId(random.nextLong());
         store.put(data.getId(), data);
     }
 
@@ -26,7 +29,7 @@ public class DataRepository {
         return store.get(id);
     }
 
-    public boolean delete(Long id) {
-        return store.remove(id) != null;
+    public Data delete(Long id) {
+        return store.remove(id);
     }
 }
