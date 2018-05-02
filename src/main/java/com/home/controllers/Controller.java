@@ -1,4 +1,4 @@
-package com.home.facade;
+package com.home.controllers;
 
 import com.home.domain.DataRepository;
 import com.home.dto.Aggregate;
@@ -14,14 +14,14 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-public class Facade {
+public class Controller {
 
     @Inject
-    ExecutorService executorService;
+    private ExecutorService executorService;
     @Inject
-    DataRepository dataRepository;
+    private DataRepository dataRepository;
     @Inject
-    RemoteDataClient remoteDataClient;
+    private RemoteDataClient remoteDataClient;
 
 
     public Data getData(Request request, Response response) {

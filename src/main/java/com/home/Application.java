@@ -3,10 +3,9 @@ package com.home;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.home.facade.Facade;
+import com.home.controllers.Controller;
 import com.home.infrastructure.ApplicationModule;
 import lombok.extern.slf4j.Slf4j;
-import spark.ResponseTransformer;
 import spark.Route;
 
 import javax.inject.Inject;
@@ -17,7 +16,7 @@ import static spark.Spark.get;
 public class Application {
 
     @Inject
-    private Facade facade;
+    private Controller controller;
     @Inject
     private ObjectMapper objectMapper;
 
@@ -29,8 +28,8 @@ public class Application {
 
     public void start() {
 
-        getAsJson("/aggregate", facade::getAggregate);
-        getAsJson("/data/:id", facade::getData);
+        getAsJson("/aggregate", controller::getAggregate);
+        getAsJson("/data/:id", controller::getData);
 
         info();
     }
