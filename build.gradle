@@ -1,3 +1,11 @@
+ext {
+    repos = [
+            'https://artifact.swissre.com/internal',
+            'https://artifact.swissre.com/external',
+            'https://artifact.swissre.com/thirdparty'
+    ]
+}
+
 group 'spark-test'
 version '1.0-SNAPSHOT'
 
@@ -11,7 +19,8 @@ run {
 }
 
 repositories {
-    mavenCentral()
+    mavenLocal()
+    repos.each { repo -> maven { url repo } }
 }
 
 dependencies {
