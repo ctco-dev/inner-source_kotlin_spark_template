@@ -10,7 +10,11 @@ import spark.Route;
 
 import javax.inject.Inject;
 
+import static spark.Spark.before;
+import static spark.Spark.delete;
 import static spark.Spark.get;
+import static spark.Spark.post;
+import static spark.Spark.put;
 
 @Slf4j
 public class Application {
@@ -27,9 +31,14 @@ public class Application {
     }
 
     public void start() {
+        before((request, response) -> response.type("application/json"));
 
         getAsJson("/aggregate", controller::getAggregate);
         getAsJson("/data/:id", controller::getData);
+
+        put("/data/:id", controller::updateData, objectMapper::writeValueAsString);
+        delete("/data/:id", controller::deleteData, objectMapper::writeValueAsString);
+        post("/data", controller::createData, objectMapper::writeValueAsString);
 
         info();
     }
