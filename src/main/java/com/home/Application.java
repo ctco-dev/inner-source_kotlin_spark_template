@@ -49,13 +49,14 @@ public class Application {
 
     private static void info() {
         // Get current size of heap in bytes
-        long heapSize = Runtime.getRuntime().totalMemory();
+        long totalHeapSize = Runtime.getRuntime().totalMemory();
+        log.info("Heap total: {}", totalHeapSize/ 1024 / 1024 + " Mb");
 
         // Get maximum size of heap in bytes. The heap cannot grow beyond this size.// Any attempt will result in an OutOfMemoryException.
-        long heapMaxSize = Runtime.getRuntime().maxMemory();
+        log.info("Heap max size: {}", Runtime.getRuntime().maxMemory()/ 1024 / 1024 + " Mb");
 
         // Get amount of free memory within the heap in bytes. This size will increase // after garbage collection and decrease as new objects are created.
         long heapFreeSize = Runtime.getRuntime().freeMemory();
-        log.info("Heap used: {}", (heapSize - heapFreeSize) / 1024 / 1024 + " Mb");
+        log.info("Heap used: {}", (totalHeapSize - heapFreeSize) / 1024 / 1024 + " Mb");
     }
 }

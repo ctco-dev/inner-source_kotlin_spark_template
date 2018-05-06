@@ -1,13 +1,27 @@
 group 'spark-test'
 version '1.0-SNAPSHOT'
 
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
+    }
+}
+
 apply plugin: 'application'
+apply plugin: 'com.github.johnrengelman.shadow'
 
 sourceCompatibility = 1.8
 
 run {
     jvmArgs "-Xmx10m"
     mainClassName = "com.home.Application"
+}
+
+shadowJar{
+    archiveName = "app.jar"
 }
 
 repositories {
