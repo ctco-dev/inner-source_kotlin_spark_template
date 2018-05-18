@@ -5,6 +5,8 @@ import com.home.domain.DataRepository;
 import com.home.dto.Aggregate;
 import com.home.dto.Data;
 import com.home.integration.RemoteDataClient;
+import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
@@ -23,8 +25,12 @@ public class Controller {
     private ExecutorService executorService;
     @Inject
     private DataRepository dataRepository;
-    @Inject
-    private RemoteDataClient remoteDataClient;
+
+    private RemoteDataClient remoteDataClient = new RemoteDataClient(new Retrofit.Builder()
+            .baseUrl("http://localhost:4567/")
+            .addConverterFactory(JacksonConverterFactory.create())
+            .build());
+
     @Inject
     private ObjectMapper objectMapper;
 
