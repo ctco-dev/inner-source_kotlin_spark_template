@@ -1,36 +1,35 @@
 package com.home;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 import com.home.controllers.Controller;
-import com.home.infrastructure.ApplicationModule;
 import lombok.extern.slf4j.Slf4j;
 import spark.Route;
 
-import javax.inject.Inject;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import static spark.Spark.before;
-import static spark.Spark.delete;
-import static spark.Spark.get;
-import static spark.Spark.post;
-import static spark.Spark.put;
+import static spark.Spark.*;
 
 @Slf4j
 public class Application {
 
-    @Inject
-    private Controller controller;
-    @Inject
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
+    private final Controller controller;
+
+    private Application(ObjectMapper objectMapper, Controller controller) {
+        this.objectMapper = objectMapper;
+        this.controller = controller;
+    }
 
     public static void main(String[] args) {
-        Injector injector = Guice.createInjector(new ApplicationModule());
-        Application application = injector.getInstance(Application.class);
+        ObjectMapper objectMapper = new ObjectMapper();
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        Controller controller = new Controller(objectMapper, executorService);
+        Application application = new Application(objectMapper, controller);
         application.start();
     }
 
-    public void start() {
+    private void start() {
         before((request, response) -> response.type("application/json"));
 
         getAsJson("/aggregate", controller::getAggregate);

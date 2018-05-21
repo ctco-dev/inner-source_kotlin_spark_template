@@ -21,18 +21,22 @@ import java.util.concurrent.Future;
 
 public class Controller {
 
-    @Inject
-    private ExecutorService executorService;
+    private final ObjectMapper objectMapper;
+    private final ExecutorService executorService;
+
     @Inject
     private DataRepository dataRepository;
 
-    private RemoteDataClient remoteDataClient = new RemoteDataClient(new Retrofit.Builder()
+    private final RemoteDataClient remoteDataClient = new RemoteDataClient(new Retrofit.Builder()
             .baseUrl("http://localhost:4567/")
             .addConverterFactory(JacksonConverterFactory.create())
             .build());
 
-    @Inject
-    private ObjectMapper objectMapper;
+
+    public Controller(ObjectMapper objectMapper, ExecutorService executorService) {
+        this.objectMapper = objectMapper;
+        this.executorService = executorService;
+    }
 
     public Data getData(Request request, Response response) {
         response.type("application/json");
@@ -45,7 +49,6 @@ public class Controller {
     }
 
     public Data deleteData(Request request, Response response) {
-
         Long id = Long.parseLong(request.params("id"));
 
         Data old = dataRepository.delete(id);
