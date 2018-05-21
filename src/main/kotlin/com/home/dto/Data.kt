@@ -1,3 +1,3 @@
 package com.home.dto
 
-data class Data (var id: Long, var content: String)
+data class Data (var id: Long, val content: String)

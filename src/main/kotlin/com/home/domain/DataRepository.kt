@@ -5,7 +5,7 @@ import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 class DataRepository {
-    private var store: MutableMap<Long, Data> = ConcurrentHashMap(hashMapOf(
+    private val store: MutableMap<Long, Data> = ConcurrentHashMap(hashMapOf(
             1L to Data(1L, "first"),
             2L to Data(2L, "second")
     ))
