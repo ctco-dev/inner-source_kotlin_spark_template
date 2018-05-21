@@ -1,17 +1,22 @@
 package com.home;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.home.controllers.Controller;
-import lombok.extern.slf4j.Slf4j;
+import com.home.domain.DataRepository;
+import com.home.integration.RemoteDataClient;
+import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 import spark.Route;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 
 import static spark.Spark.*;
 
-@Slf4j
 public class Application {
+    private static final Logger log = Logger.getLogger(Application.class.getSimpleName());
 
     private final ObjectMapper objectMapper;
     private final Controller controller;
@@ -22,9 +27,19 @@ public class Application {
     }
 
     public static void main(String[] args) {
-        ObjectMapper objectMapper = new ObjectMapper();
         ExecutorService executorService = Executors.newFixedThreadPool(10);
-        Controller controller = new Controller(objectMapper, executorService);
+
+        DataRepository dataRepository = new DataRepository();
+
+        ObjectMapper objectMapper = new ObjectMapper()
+                .registerModule(new ParameterNamesModule());
+
+        RemoteDataClient remoteDataClient = new RemoteDataClient(new Retrofit.Builder()
+                .baseUrl("http://localhost:4567/")
+                .addConverterFactory(JacksonConverterFactory.create(objectMapper))
+                .build());
+
+        Controller controller = new Controller(objectMapper, executorService, remoteDataClient, dataRepository);
         Application application = new Application(objectMapper, controller);
         application.start();
     }
@@ -49,13 +64,13 @@ public class Application {
     private static void info() {
         // Get current size of heap in bytes
         long totalHeapSize = Runtime.getRuntime().totalMemory();
-        log.info("Heap total: {}", totalHeapSize/ 1024 / 1024 + " Mb");
+        log.info(() -> String.format("Heap total: %s", totalHeapSize/ 1024 / 1024 + " Mb"));
 
         // Get maximum size of heap in bytes. The heap cannot grow beyond this size.// Any attempt will result in an OutOfMemoryException.
-        log.info("Heap max size: {}", Runtime.getRuntime().maxMemory()/ 1024 / 1024 + " Mb");
+        log.info(() -> String.format("Heap max size: %s", Runtime.getRuntime().maxMemory()/ 1024 / 1024 + " Mb"));
 
         // Get amount of free memory within the heap in bytes. This size will increase // after garbage collection and decrease as new objects are created.
         long heapFreeSize = Runtime.getRuntime().freeMemory();
-        log.info("Heap used: {}", (totalHeapSize - heapFreeSize) / 1024 / 1024 + " Mb");
+        log.info(() -> String.format("Heap used: %s", (totalHeapSize - heapFreeSize) / 1024 / 1024 + " Mb"));
     }
 }

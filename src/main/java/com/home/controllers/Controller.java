@@ -5,13 +5,10 @@ import com.home.domain.DataRepository;
 import com.home.dto.Aggregate;
 import com.home.dto.Data;
 import com.home.integration.RemoteDataClient;
-import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
 
-import javax.inject.Inject;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -23,19 +20,15 @@ public class Controller {
 
     private final ObjectMapper objectMapper;
     private final ExecutorService executorService;
+    private final RemoteDataClient remoteDataClient;
 
-    @Inject
-    private DataRepository dataRepository;
+    private final DataRepository dataRepository;
 
-    private final RemoteDataClient remoteDataClient = new RemoteDataClient(new Retrofit.Builder()
-            .baseUrl("http://localhost:4567/")
-            .addConverterFactory(JacksonConverterFactory.create())
-            .build());
-
-
-    public Controller(ObjectMapper objectMapper, ExecutorService executorService) {
+    public Controller(ObjectMapper objectMapper, ExecutorService executorService, RemoteDataClient remoteDataClient, DataRepository dataRepository) {
         this.objectMapper = objectMapper;
         this.executorService = executorService;
+        this.remoteDataClient = remoteDataClient;
+        this.dataRepository = dataRepository;
     }
 
     public Data getData(Request request, Response response) {
@@ -72,7 +65,7 @@ public class Controller {
         String body = request.body();
         Data data = objectMapper.readValue(body, Data.class);
 
-        if (!data.getId().equals(id)) {
+        if (!id.equals(data.getId())) {
             Spark.halt(400);
         }
 
