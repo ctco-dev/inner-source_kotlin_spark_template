@@ -27,7 +27,7 @@ dependencies {
 }
 
 application {
-    group = "spark-test"
+    group = "lv.ctco.spark"
     version = "1.0-SNAPSHOT"
     applicationName = "spark-web-example"
     mainClassName = "com.home.ApplicationKt"
@@ -44,6 +44,7 @@ tasks.withType<JavaCompile> {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.javaParameters = true
+    kotlinOptions.jvmTarget = "1.8"
 }
 
 val shadowJar: ShadowJar by tasks
