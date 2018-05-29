@@ -3,6 +3,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val kotlinVersion = "1.2.41"
+val junitVersion = "5.2.0"
 
 plugins {
     application
@@ -23,7 +24,9 @@ dependencies {
     compile(group = "org.slf4j", name = "slf4j-simple", version = "1.7.25")
 
     testCompile(group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version = kotlinVersion)
-    testCompile(group = "junit", name = "junit", version = "4.12")
+    testImplementation(group = "org.junit", name = "junit-bom", version = junitVersion)
+    testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api")
+    testRuntimeOnly(group = "org.junit.jupiter", name = "junit-jupiter-engine")
 }
 
 application {
@@ -32,6 +35,10 @@ application {
     applicationName = "spark-web-example"
     mainClassName = "com.home.ApplicationKt"
     applicationDefaultJvmArgs = listOf("-Xmx10m")
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
 
 java {
