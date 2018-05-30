@@ -8,13 +8,17 @@ import org.junit.jupiter.api.assertAll
 
 class DataRepositoryTest {
 
-    private val instance: DataRepository = DataRepository()
+    private val instance: Repository = DataRepository
 
     @Test
     fun read() {
+        val fst = Data(1L, "first")
+        val snd = Data(2L, "second")
+        instance.update(fst)
+        instance.update(snd)
         assertAll(
-                { assertEquals("first", instance.read(1L)!!.content) },
-                { assertEquals("second", instance.read(2L)!!.content)}
+                { assertEquals(fst, instance.read(1L)) },
+                { assertEquals(snd, instance.read(2L))}
         )
     }
 
