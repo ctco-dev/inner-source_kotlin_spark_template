@@ -10,7 +10,6 @@ import spark.Request
 import spark.Response
 import spark.Spark
 import java.io.IOException
-import java.util.*
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.ExecutorService
 
@@ -80,7 +79,7 @@ class Controller(val repository: Repository,
         val data1Future = executorService.submit<Data> { remoteDataClient.getRemoteData("1", 600) }
         val data2 = remoteDataClient.getRemoteData("2", 600)
 
-        val results = Arrays.asList<Data>(data1Future.get(), data2)
+        val results = setOf(data1Future.get(), data2!!)
         return Aggregate(results)
     }
 

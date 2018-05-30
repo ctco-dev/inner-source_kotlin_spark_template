@@ -1,3 +1,3 @@
 package com.home.dto
 
-data class Aggregate(val data: List<Data>)
+data class Aggregate(val data: Set<Data>)

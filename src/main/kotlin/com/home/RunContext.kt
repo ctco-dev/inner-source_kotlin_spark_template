@@ -2,6 +2,7 @@ package com.home
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule
+import com.home.integration.DataService
 import com.home.integration.RemoteDataClient
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
@@ -28,8 +29,12 @@ object RunContext : Context {
     override val objectMapper: ObjectMapper = ObjectMapper()
             .registerModule(ParameterNamesModule())
 
-    override val remoteDataClient: RemoteDataClient = RemoteDataClient(Retrofit.Builder()
+    val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl("http://localhost:4567/")
             .addConverterFactory(JacksonConverterFactory.create(objectMapper))
-            .build())
+            .build()
+
+    val dataService: DataService = retrofit.create(DataService::class.java)
+
+    override val remoteDataClient: RemoteDataClient = RemoteDataClient(dataService)
 }
