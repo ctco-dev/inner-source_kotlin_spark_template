@@ -12,6 +12,10 @@ plugins {
     id("com.github.johnrengelman.shadow").version("2.0.4")
 }
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     compile(kotlin("stdlib", kotlinVersion))
     compile("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "0.22.5")
