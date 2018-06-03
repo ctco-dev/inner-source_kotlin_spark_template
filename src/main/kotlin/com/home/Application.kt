@@ -18,14 +18,15 @@ class Application(val objectMapper: ObjectMapper, val controller: Controller) {
     }
 
     internal fun start() {
-        before(Filter { request: Request, response: Response -> response.type("application/json") })
 
-        getAsJson("/aggregate", Route { request, response -> controller.getAggregate(request, response) })
-        getAsJson("/data/:id", Route { request, response -> controller.getData(request, response) })
+        before(Filter { Request, response: Response -> response.type("application/json") })
 
-        put("/data/:id", Route { request, response -> controller.updateData(request, response) }, ResponseTransformer { objectMapper.writeValueAsString(it) })
-        delete("/data/:id", Route { request, response -> controller.deleteData(request, response) }, ResponseTransformer { objectMapper.writeValueAsString(it) })
-        post("/data", Route { request, response -> controller.createData(request, response) }, ResponseTransformer { objectMapper.writeValueAsString(it) })
+        get("/aggregate", route(controller::getAggregate))
+        get("/data/:id", route(controller::getData))
+
+        put("/data/:id", route(controller::updateData))
+        delete("/data/:id", route(controller::deleteData))
+        post("/data", route(controller::createData))
 
         info()
     }
@@ -43,8 +44,11 @@ class Application(val objectMapper: ObjectMapper, val controller: Controller) {
         log.info { String.format("Heap used: %s", ((totalHeapSize - heapFreeSize) / 1024 / 1024).toString() + " Mb") }
     }
 
-    private fun getAsJson(path: String, route: Route) {
-        get(path, route, ResponseTransformer { objectMapper.writeValueAsString(it) })
+    private fun route(handler: (Request, Response) -> Any?): Route {
+        return Route { request, response ->
+            val result = handler(request!!, response!!)
+            objectMapper.writeValueAsString(result)
+        }
     }
 }
 
