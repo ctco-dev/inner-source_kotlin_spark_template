@@ -1,12 +1,14 @@
 package com.home.integration
 
+import com.google.inject.Inject
 import com.home.dto.Data
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import java.util.logging.Logger
 
-class RemoteDataClient(retrofit: Retrofit) {
+class RemoteDataClient @Inject constructor(retrofit: Retrofit) {
+
     companion object {
         val log: Logger = Logger.getLogger(this::class.java.simpleName)
     }

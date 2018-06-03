@@ -26,6 +26,7 @@ dependencies {
     compile(group = "com.fasterxml.jackson.core", name = "jackson-databind", version = "2.9.5")
     compile(group = "com.fasterxml.jackson.module", name = "jackson-module-parameter-names", version = "2.9.5")
     compile(group = "org.slf4j", name = "slf4j-simple", version = "1.7.25")
+    compile(group = "com.google.inject", name = "guice", version = "4.2.0")
 
     testCompile(group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version = kotlinVersion)
     testImplementation(group = "org.junit", name = "junit-bom", version = junitVersion)

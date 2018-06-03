@@ -12,12 +12,13 @@ import java.io.IOException
 import java.util.*
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.ExecutorService
+import javax.inject.Inject
 
 
-class Controller(private val objectMapper: ObjectMapper,
-                 private val executorService: ExecutorService,
-                 private val remoteDataClient: RemoteDataClient,
-                 private val dataRepository: DataRepository) {
+class Controller @Inject constructor(private val objectMapper: ObjectMapper,
+                                     private val executorService: ExecutorService,
+                                     private val remoteDataClient: RemoteDataClient,
+                                     private val dataRepository: DataRepository) {
 
     private fun Request.getId(): Long {
         return this.params("id").toLong()
