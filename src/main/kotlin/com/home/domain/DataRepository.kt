@@ -10,14 +10,15 @@ class DataRepository {
             2L to Data(2L, "second")
     ))
 
-    fun update(data: Data): Unit {
+    fun update(data: Data): Data {
         store.put(data.id, data)
+        return data
     }
 
-    fun create(data: Data) {
+    fun create(data: Data) : Data{
         val r: Random = Random()
-        data.id = r.nextLong()
-        this.update(data)
+        val newData = Data(r.nextLong(), data.content)
+        return this.update(newData)
     }
 
     fun read(id: Long): Data? = store.get(id)

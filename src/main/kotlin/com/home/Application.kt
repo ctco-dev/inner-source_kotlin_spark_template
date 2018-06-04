@@ -1,18 +1,20 @@
 package com.home
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.paramnames.ParameterNamesModule
+import com.google.inject.Guice
 import com.home.controllers.Controller
-import com.home.domain.DataRepository
-import com.home.integration.RemoteDataClient
-import retrofit2.Retrofit
-import retrofit2.converter.jackson.JacksonConverterFactory
-import spark.*
+import com.home.infrastructure.ApplicationContext
+import spark.Filter
+import spark.Request
+import spark.Response
+import spark.Route
 import spark.Spark.*
-import java.util.concurrent.Executors
 import java.util.logging.Logger
+import javax.inject.Inject
 
-class Application(val objectMapper: ObjectMapper, val controller: Controller) {
+
+class Application @Inject constructor(private val objectMapper: ObjectMapper,
+                                      private val controller: Controller) {
     companion object {
         val log: Logger = Logger.getLogger(this::class.java.simpleName)
     }
@@ -46,6 +48,7 @@ class Application(val objectMapper: ObjectMapper, val controller: Controller) {
 
     private fun route(handler: (Request, Response) -> Any?): Route {
         return Route { request, response ->
+            response.type("application/json")
             val result = handler(request!!, response!!)
             objectMapper.writeValueAsString(result)
         }
@@ -53,19 +56,7 @@ class Application(val objectMapper: ObjectMapper, val controller: Controller) {
 }
 
 fun main(args: Array<String>) {
-    val executorService = Executors.newFixedThreadPool(10)
-
-    val dataRepository = DataRepository()
-
-    val objectMapper = ObjectMapper()
-            .registerModule(ParameterNamesModule())
-
-    val remoteDataClient = RemoteDataClient(Retrofit.Builder()
-            .baseUrl("http://localhost:4567/")
-            .addConverterFactory(JacksonConverterFactory.create(objectMapper))
-            .build())
-
-    val controller = Controller(objectMapper, executorService, remoteDataClient, dataRepository)
-    val application = Application(objectMapper, controller)
+    val injector = Guice.createInjector(ApplicationContext())
+    val application = injector.getInstance(Application::class.java)
     application.start()
 }
