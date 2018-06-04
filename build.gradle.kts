@@ -23,8 +23,7 @@ dependencies {
     compile(group = "com.sparkjava", name = "spark-core", version = "2.7.2")
     compile(group = "com.squareup.retrofit2", name = "retrofit", version = "2.4.0")
     compile(group = "com.squareup.retrofit2", name = "converter-jackson", version = "2.4.0")
-    compile(group = "com.fasterxml.jackson.core", name = "jackson-databind", version = "2.9.5")
-    compile(group = "com.fasterxml.jackson.module", name = "jackson-module-parameter-names", version = "2.9.5")
+    compile(group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin", version = "2.9.5")
     compile(group = "org.slf4j", name = "slf4j-simple", version = "1.7.25")
     compile(group = "com.google.inject", name = "guice", version = "4.2.0")
 
@@ -48,10 +47,6 @@ tasks.withType<Test> {
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
-}
-
-tasks.withType<JavaCompile> {
-    options.compilerArgs.add("-parameters")
 }
 
 tasks.withType<KotlinCompile> {

@@ -1,6 +1,7 @@
 package com.home.infrastructure
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.google.inject.AbstractModule
 import com.google.inject.Provides
 import retrofit2.Retrofit
@@ -14,7 +15,7 @@ class ApplicationContext : AbstractModule() {
     fun retrofit(): Retrofit {
         return Retrofit.Builder()
                 .baseUrl("http://localhost:4567/")
-                .addConverterFactory(JacksonConverterFactory.create())
+                .addConverterFactory(JacksonConverterFactory.create(objectMapper()))
                 .build()
     }
 
@@ -25,6 +26,6 @@ class ApplicationContext : AbstractModule() {
 
     @Provides
     fun objectMapper(): ObjectMapper {
-        return ObjectMapper()
+        return ObjectMapper().registerKotlinModule()
     }
 }

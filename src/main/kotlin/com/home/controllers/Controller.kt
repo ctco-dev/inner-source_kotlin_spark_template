@@ -53,9 +53,8 @@ class Controller @Inject constructor(private val objectMapper: ObjectMapper,
     @Throws(IOException::class)
     fun createData(request: Request, response: Response): Data {
         val data = request.getData()
-        dataRepository.create(data)
         response.status(201)
-        return data
+        return dataRepository.create(data)
     }
 
     @Throws(IOException::class)
