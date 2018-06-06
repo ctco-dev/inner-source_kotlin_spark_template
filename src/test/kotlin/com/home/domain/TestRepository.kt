@@ -4,6 +4,7 @@ import com.home.dto.Data
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
+// TODO: remove and switch to mocks
 class TestRepository : Repository {
     private val store: MutableMap<Long, Data> = ConcurrentHashMap(hashMapOf(
             1L to Data(1L, "first"),

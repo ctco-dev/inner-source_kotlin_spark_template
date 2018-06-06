@@ -12,6 +12,7 @@ import java.util.concurrent.Executors
 fun api() : Context = RunContext
 
 /**
+ * TODO: remove
  * Think of this as something like Spring's context.
  */
 interface Context {
