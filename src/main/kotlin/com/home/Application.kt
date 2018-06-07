@@ -46,6 +46,7 @@ class Application(val objectMapper: ObjectMapper, val controller: Controller) {
 
     private fun route(handler: (Request, Response) -> Any?): Route {
         return Route { request, response ->
+            response.type("application/json")
             val result = handler(request!!, response!!)
             objectMapper.writeValueAsString(result)
         }
