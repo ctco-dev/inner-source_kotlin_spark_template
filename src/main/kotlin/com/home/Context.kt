@@ -9,25 +9,15 @@ import retrofit2.converter.jackson.JacksonConverterFactory
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-fun api() : Context = RunContext
-
-/**
- * TODO: remove
- * Think of this as something like Spring's context.
- */
-interface Context {
-    val executorService: ExecutorService
-    val objectMapper: ObjectMapper
-    val remoteDataClient: RemoteDataClient
-}
+fun api() : Context = Context
 
 /**
  * Note that this is an `object`, so we have a guarantee that this is a Singleton
  */
-object RunContext : Context {
-    override val executorService: ExecutorService = Executors.newFixedThreadPool(10)
+object Context {
+    val executorService: ExecutorService = Executors.newFixedThreadPool(10)
 
-    override val objectMapper: ObjectMapper = ObjectMapper()
+    val objectMapper: ObjectMapper = ObjectMapper()
             .registerModule(ParameterNamesModule())
 
     val retrofit: Retrofit = Retrofit.Builder()
@@ -37,5 +27,5 @@ object RunContext : Context {
 
     val dataService: DataService = retrofit.create(DataService::class.java)
 
-    override val remoteDataClient: RemoteDataClient = RemoteDataClient(dataService)
+    val remoteDataClient: RemoteDataClient = RemoteDataClient(dataService)
 }
