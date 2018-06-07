@@ -2,7 +2,7 @@ package com.home.controllers
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.home.api
-import com.home.domain.Repository
+import com.home.domain.DataRepository
 import com.home.dto.Aggregate
 import com.home.dto.Data
 import com.home.integration.RemoteDataClient
@@ -13,7 +13,7 @@ import java.io.IOException
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.ExecutorService
 
-class Controller(val repository: Repository,
+class Controller(val repository: DataRepository,
                  val objectMapper: ObjectMapper = api().objectMapper,
                  val remoteDataClient: RemoteDataClient = api().remoteDataClient,
                  val executorService: ExecutorService = api().executorService) {

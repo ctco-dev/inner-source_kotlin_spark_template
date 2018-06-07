@@ -1,6 +1,6 @@
 package com.home.controllers
 
-import com.home.domain.TestRepository
+import com.home.domain.DataRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -18,7 +18,7 @@ class ControllerTest {
     @BeforeEach
     internal fun setUp() {
         controller = Controller(
-                repository = TestRepository(),
+                repository = DataRepository,
                 executorService = Executors.newSingleThreadExecutor()
         )
     }

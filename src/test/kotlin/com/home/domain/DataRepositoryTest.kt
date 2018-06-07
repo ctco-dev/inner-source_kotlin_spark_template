@@ -9,7 +9,7 @@ import org.junit.jupiter.api.assertAll
 
 class DataRepositoryTest {
 
-    private var instance: Repository = DataRepository
+    private var instance: DataRepository = DataRepository
 
     @BeforeEach
     internal fun setUp() {
