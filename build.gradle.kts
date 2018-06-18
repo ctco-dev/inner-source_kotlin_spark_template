@@ -31,6 +31,7 @@ dependencies {
     testImplementation(group = "org.junit", name = "junit-bom", version = junitVersion)
     testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api")
     testRuntimeOnly(group = "org.junit.jupiter", name = "junit-jupiter-engine")
+    testCompile(group = "org.mockito", name = "mockito-junit-jupiter", version = "2.18.3")
 }
 
 application {

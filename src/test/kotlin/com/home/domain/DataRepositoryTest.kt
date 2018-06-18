@@ -3,18 +3,29 @@ package com.home.domain
 import com.home.dto.Data
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
 
 class DataRepositoryTest {
 
-    private val instance: DataRepository = DataRepository()
+    private var instance: DataRepository = DataRepository
+
+    @BeforeEach
+    internal fun setUp() {
+        val fst = Data(1L, "first")
+        val snd = Data(2L, "second")
+        instance.update(fst)
+        instance.update(snd)
+    }
 
     @Test
     fun read() {
+        val fst = Data(1L, "first")
+        val snd = Data(2L, "second")
         assertAll(
-                { assertEquals("first", instance.read(1L)!!.content) },
-                { assertEquals("second", instance.read(2L)!!.content)}
+                { assertEquals(fst, instance.read(1L)) },
+                { assertEquals(snd, instance.read(2L))}
         )
     }
 

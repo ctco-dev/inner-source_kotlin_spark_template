@@ -1,24 +1,22 @@
 package com.home
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.paramnames.ParameterNamesModule
 import com.home.controllers.Controller
 import com.home.domain.DataRepository
-import com.home.integration.RemoteDataClient
-import retrofit2.Retrofit
-import retrofit2.converter.jackson.JacksonConverterFactory
-import spark.*
+import spark.Filter
+import spark.Request
+import spark.Response
+import spark.Route
 import spark.Spark.*
-import java.util.concurrent.Executors
 import java.util.logging.Logger
 
-class Application(val objectMapper: ObjectMapper, val controller: Controller) {
+class Application(val controller: Controller,
+                  val objectMapper: ObjectMapper = api().objectMapper ) {
     companion object {
         val log: Logger = Logger.getLogger(this::class.java.simpleName)
     }
 
     internal fun start() {
-
         before(Filter { Request, response: Response -> response.type("application/json") })
 
         get("/aggregate", route(controller::getAggregate))
@@ -54,19 +52,7 @@ class Application(val objectMapper: ObjectMapper, val controller: Controller) {
 }
 
 fun main(args: Array<String>) {
-    val executorService = Executors.newFixedThreadPool(10)
-
-    val dataRepository = DataRepository()
-
-    val objectMapper = ObjectMapper()
-            .registerModule(ParameterNamesModule())
-
-    val remoteDataClient = RemoteDataClient(Retrofit.Builder()
-            .baseUrl("http://localhost:4567/")
-            .addConverterFactory(JacksonConverterFactory.create(objectMapper))
-            .build())
-
-    val controller = Controller(objectMapper, executorService, remoteDataClient, dataRepository)
-    val application = Application(objectMapper, controller)
+    val controller = Controller(DataRepository)
+    val application = Application(controller)
     application.start()
 }
