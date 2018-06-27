@@ -1,16 +1,18 @@
 import kotlin.collections.listOf
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
-val kotlinVersion = "1.2.41"
-val junitVersion = "5.2.0"
 
 plugins {
     application
-    kotlin("jvm") version "1.2.41"
-//    id("com.github.rengelman.shadow").version("2.0.4")
+    kotlin("jvm") version "1.2.50"
     id("com.github.johnrengelman.shadow").version("2.0.4")
 }
+
+// get the Kotlin version from the Kotlin plugin definition
+val kotlinVersion = plugins.getPlugin(KotlinPluginWrapper::class.java).kotlinPluginVersion
+val kotlinCoroutinesVersion = "0.23.3"
+val junitVersion = "5.2.0"
 
 repositories {
     mavenCentral()
@@ -18,7 +20,7 @@ repositories {
 
 dependencies {
     compile(kotlin("stdlib", kotlinVersion))
-    compile("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "0.22.5")
+    compile("org.jetbrains.kotlinx", "kotlinx-coroutines-core", kotlinCoroutinesVersion)
 
     compile(group = "com.sparkjava", name = "spark-core", version = "2.7.2")
     compile(group = "com.squareup.retrofit2", name = "retrofit", version = "2.4.0")
@@ -27,7 +29,7 @@ dependencies {
     compile(group = "com.fasterxml.jackson.module", name = "jackson-module-parameter-names", version = "2.9.5")
     compile(group = "org.slf4j", name = "slf4j-simple", version = "1.7.25")
 
-    testCompile(group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version = kotlinVersion)
+    testCompile(kotlin("stdlib", kotlinVersion))
     testImplementation(group = "org.junit", name = "junit-bom", version = junitVersion)
     testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api")
     testRuntimeOnly(group = "org.junit.jupiter", name = "junit-jupiter-engine")
