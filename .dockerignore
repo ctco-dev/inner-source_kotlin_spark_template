@@ -1,4 +1,6 @@
-src
-.idea
-.gradle
-/build/
+/.idea
+/.gradle
+/build
+/adr
+/db
+.gitignore

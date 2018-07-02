@@ -2,12 +2,34 @@ import kotlin.collections.listOf
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val kotlinVersion = "1.2.41"
+repositories {
+    mavenCentral()
+    jcenter()
+    listOf(
+            "https://artifact.swissre.com/internal",
+            "https://artifact.swissre.com/external",
+            "https://artifact.swissre.com/thirdparty"
+    ).forEach { maven { url = uri(it) } }
+}
+
+buildscript {
+    repositories {
+        jcenter()
+        listOf(
+                "https://artifact.swissre.com/gradle-plugins",
+                "https://artifact.swissre.com/internal",
+                "https://artifact.swissre.com/external",
+                "https://artifact.swissre.com/thirdparty"
+        ).forEach { maven { url = uri(it) } }
+    }
+}
+
+val kotlinVersion = "1.2.50"
 val junitVersion = "5.2.0"
 
 plugins {
     application
-    kotlin("jvm") version "1.2.41"
+    kotlin("jvm") version "1.2.50"
 //    id("com.github.rengelman.shadow").version("2.0.4")
     id("com.github.johnrengelman.shadow").version("2.0.4")
 }
@@ -59,5 +81,6 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-val shadowJar: ShadowJar by tasks
-shadowJar.archiveName = "app.jar"
+tasks.withType<ShadowJar> {
+    archiveName = "app.jar"
+}
