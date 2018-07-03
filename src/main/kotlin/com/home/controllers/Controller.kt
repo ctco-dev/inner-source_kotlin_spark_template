@@ -5,6 +5,7 @@ import com.home.api
 import com.home.domain.DataRepository
 import com.home.dto.Aggregate
 import com.home.dto.Data
+import com.home.integration.DataBaseClient
 import com.home.integration.RemoteDataClient
 import spark.Request
 import spark.Response
@@ -16,7 +17,8 @@ import java.util.concurrent.ExecutorService
 class Controller(val repository: DataRepository,
                  val objectMapper: ObjectMapper = api().objectMapper,
                  val remoteDataClient: RemoteDataClient = api().remoteDataClient,
-                 val executorService: ExecutorService = api().executorService) {
+                 val executorService: ExecutorService = api().executorService,
+                 val dataBaseClient: DataBaseClient = api().dbClient) {
 
     private fun Request.getId(): Long {
         return this.params("id").toLong()
@@ -75,6 +77,9 @@ class Controller(val repository: DataRepository,
 
     @Throws(ExecutionException::class, InterruptedException::class)
     fun getAggregate(request: Request, response: Response): Aggregate {
+
+        dataBaseClient.proceedCreateUser()
+        dataBaseClient.proceedGetUsers()
 
         val data1Future = executorService.submit<Data> { remoteDataClient.getRemoteData("1", 600) }
         val data2 = remoteDataClient.getRemoteData("2", 600)

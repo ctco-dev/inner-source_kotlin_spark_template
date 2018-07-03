@@ -2,6 +2,8 @@ import kotlin.collections.listOf
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.util.Properties
+import java.io.FileInputStream
 
 plugins {
     application
@@ -12,7 +14,15 @@ plugins {
 // get the Kotlin version from the Kotlin plugin definition
 val kotlinVersion = plugins.getPlugin(KotlinPluginWrapper::class.java).kotlinPluginVersion
 val kotlinCoroutinesVersion = "0.23.3"
+val sparkVersion = "2.7.2"
+val retrofitVersion = "2.4.0"
+val jacksonVersion = "2.9.5"
 val junitVersion = "5.2.0"
+val jooqVersion = "3.11.0"
+
+allprojects {
+    loadProperties(".env", ext) // load local.properties into ext
+}
 
 repositories {
     mavenCentral()
@@ -20,14 +30,21 @@ repositories {
 
 dependencies {
     compile(kotlin("stdlib", kotlinVersion))
-    compile("org.jetbrains.kotlinx", "kotlinx-coroutines-core", kotlinCoroutinesVersion)
+    compile(kotlin("stdlib-jdk8", kotlinVersion))
+    compile(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = kotlinCoroutinesVersion)
 
-    compile(group = "com.sparkjava", name = "spark-core", version = "2.7.2")
-    compile(group = "com.squareup.retrofit2", name = "retrofit", version = "2.4.0")
-    compile(group = "com.squareup.retrofit2", name = "converter-jackson", version = "2.4.0")
-    compile(group = "com.fasterxml.jackson.core", name = "jackson-databind", version = "2.9.5")
-    compile(group = "com.fasterxml.jackson.module", name = "jackson-module-parameter-names", version = "2.9.5")
+    compile(project(":dal"))
+    compile(group = "io.github.cdimascio", name = "java-dotenv", version = "3.1.1")
+
+    compile(group = "com.sparkjava", name = "spark-core", version = sparkVersion)
+    compile(group = "com.squareup.retrofit2", name = "retrofit", version = retrofitVersion)
+    compile(group = "com.squareup.retrofit2", name = "converter-jackson", version = retrofitVersion)
+    compile(group = "com.fasterxml.jackson.core", name = "jackson-databind", version = jacksonVersion)
+    compile(group = "com.fasterxml.jackson.module", name = "jackson-module-parameter-names", version = jacksonVersion)
     compile(group = "org.slf4j", name = "slf4j-simple", version = "1.7.25")
+
+    compile(group = "org.jooq", name = "jooq", version = jooqVersion)
+    compile(group = "org.postgresql", name = "postgresql", version = "42.2.2")
 
     testCompile(kotlin("stdlib", kotlinVersion))
     testImplementation(group = "org.junit", name = "junit-bom", version = junitVersion)
@@ -63,3 +80,14 @@ tasks.withType<KotlinCompile> {
 
 val shadowJar: ShadowJar by tasks
 shadowJar.archiveName = "app.jar"
+
+fun loadProperties(path: String, pr: ExtraPropertiesExtension) = loadProperties(file(path), pr)
+
+fun loadProperties(file: File, pr: ExtraPropertiesExtension) {
+    Properties().apply {
+        load(FileInputStream(file))
+        forEach { (k, v) ->
+            pr["$k"] = v
+        }
+    }
+}
