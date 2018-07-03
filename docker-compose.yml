@@ -1,8 +1,11 @@
 # Use postgres/example user/password credentials
+# When using 'docker-compose up' it's possible that the Flyway container starts before the database is up, causing an error
+# In this case just do a relaunch.
+# TODO: integrate wait-for-it.sh or something to wait until DB is up before running Flyway
+
 version: '3.1'
 
 services:
-
   db:
     image: postgres:10.4-alpine
     environment:
