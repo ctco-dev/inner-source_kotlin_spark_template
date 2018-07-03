@@ -5,21 +5,14 @@ services:
 
   db:
     image: postgres:10.4-alpine
-    restart: always
     environment:
       POSTGRES_PASSWORD: example
+    ports:
+      - 5432:5432
 
   flyway:
-    image: boxfuse/flyway:5.1.1-alpine
-    restart: always
-    volumes:
-      - ./db:/flyway/sql
+    build:
+      context: ./db
     command: -url=jdbc:postgresql://db:5432/postgres -user=postgres -password=example migrate
     depends_on:
       - db
-
-  adminer:
-    image: adminer:4.6.2-standalone
-    restart: always
-    ports:
-      - 8080:8080
