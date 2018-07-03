@@ -9,7 +9,8 @@ repositories {
     listOf(
             "https://artifact.swissre.com/internal",
             "https://artifact.swissre.com/external",
-            "https://artifact.swissre.com/thirdparty"
+            "https://artifact.swissre.com/thirdparty",
+			"http://jcenter.bintray.com"
     ).forEach { maven { url = uri(it) } }
 }
 
@@ -20,13 +21,11 @@ buildscript {
                 "https://artifact.swissre.com/gradle-plugins",
                 "https://artifact.swissre.com/internal",
                 "https://artifact.swissre.com/external",
-                "https://artifact.swissre.com/thirdparty"
+                "https://artifact.swissre.com/thirdparty",
+				"http://jcenter.bintray.com"
         ).forEach { maven { url = uri(it) } }
     }
 }
-
-val kotlinVersion = "1.2.50"
-val junitVersion = "5.2.0"
 
 plugins {
     application
@@ -38,10 +37,6 @@ plugins {
 val kotlinVersion = plugins.getPlugin(KotlinPluginWrapper::class.java).kotlinPluginVersion
 val kotlinCoroutinesVersion = "0.23.3"
 val junitVersion = "5.2.0"
-
-repositories {
-    mavenCentral()
-}
 
 dependencies {
     compile(kotlin("stdlib", kotlinVersion))

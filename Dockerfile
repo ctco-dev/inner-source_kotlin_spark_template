@@ -1,5 +1,5 @@
 # Build
-FROM gradle:4.7.0-jdk10 as build
+FROM gradle:4.6.0-jdk10 as build
 COPY build.gradle.kts settings.gradle.kts ./
 COPY src ./src
 RUN gradle shadowJar --no-daemon
