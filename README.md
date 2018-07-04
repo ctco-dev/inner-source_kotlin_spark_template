@@ -16,4 +16,4 @@ DB_USERNAME=postgres
 DB_PASSWORD=example
 ```
 * Reinitialize gradle project in your IDE to generate sources for Data Access Layer `dal` or build:
-`gradle build`
+`./gradlew build`
