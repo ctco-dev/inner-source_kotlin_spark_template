@@ -9,7 +9,7 @@ To develop the application follow steps
  * Create DB connection configuretion in `.env` file:
 ```properties
 DB_URL=jdbc:postgresql://hostname.of.remote.docker.host:5432/postgres
-DB_USER=postgres
+DB_USERNAME=postgres
 DB_PASSWORD=example
 ```
  * Execute migration scripts for DB: 
