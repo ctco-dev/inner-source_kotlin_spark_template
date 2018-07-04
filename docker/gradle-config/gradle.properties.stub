@@ -1,0 +1,2 @@
+# If you're on client environment, take the 'init.gradle' file @
+# <CLIENT_GIT>/projects/SLSR/repos/ecosystem/browse/templates/docker/gradle-config/gradle.properties
