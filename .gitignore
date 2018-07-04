@@ -4,3 +4,4 @@ out
 /build/
 .env
 docker-compose.override.yml
+dal/build
