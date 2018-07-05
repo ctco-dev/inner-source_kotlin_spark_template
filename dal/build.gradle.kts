@@ -41,17 +41,14 @@ tasks.withType<KotlinCompile> {
 }
 
 val ENV = System.getenv()
-val dbUrl = ENV["DB_URL"]
-val dbUsername = ENV["DB_USERNAME"]
-val dbPassword = ENV["DB_PASSWORD"]
 
 jooqGenerator {
     configuration("primary", project.java.sourceSets.getByName("main")) {
         configuration = jooqCodegenConfiguration {
             jdbc = jdbc {
-                url = "${dbUrl}"
-                username = "${dbUsername}"
-                password = "${dbPassword}"
+                url = "${ENV["DB_URL"]}"
+                username = "${ENV["DB_USERNAME"]}"
+                password = "${ENV["DB_PASSWORD"]}"
                 driver = "org.postgresql.Driver"
                 schema = "public"
             }
