@@ -1,3 +1,5 @@
 .idea
 .gradle
 /build/
+docker/gradle-config/gradle.properties.stub
+docker/gradle-config/init.gradle.stub
