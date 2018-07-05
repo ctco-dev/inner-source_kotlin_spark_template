@@ -48,5 +48,5 @@ object Context {
     val dbClient: DataBaseClient = DataBaseClient(dbConnection);
 
     private fun getProperty(key: String): String? =
-            System.getProperty(key) ?: io.github.cdimascio.dotenv.dotenv()[key]
+            System.getProperty(key) ?: io.github.cdimascio.dotenv.dotenv {directory = "."}[key]
 }

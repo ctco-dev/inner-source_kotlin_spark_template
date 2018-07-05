@@ -2,6 +2,11 @@ out
 .idea
 .gradle
 /build/
+dal/build
+
+# Files below aren't commited, but should usually be present
+# TODO: See <WIKI URL> for details
 .env
 docker-compose.override.yml
-dal/build
+/docker/gradle-config/init.gradle
+/docker/gradle-config/gradle.properties
