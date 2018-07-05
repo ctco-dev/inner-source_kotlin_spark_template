@@ -46,6 +46,7 @@ jooqGenerator {
     configuration("primary", project.java.sourceSets.getByName("main")) {
         configuration = jooqCodegenConfiguration {
             jdbc = jdbc {
+                // TODO: uses ${PROJECT_ROOT}/.env
                 url = "${ext2["DB_URL"]}"
                 username = "${ext2["DB_USERNAME"]}"
                 password = "${ext2["DB_PASSWORD"]}"

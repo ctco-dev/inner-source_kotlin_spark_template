@@ -47,6 +47,7 @@ object Context {
 
     val dbClient: DataBaseClient = DataBaseClient(dbConnection);
 
+    // TODO: uses ${PROJECT_ROOT}/src/main/resources/.env
     private fun getProperty(key: String): String? =
             System.getProperty(key) ?: io.github.cdimascio.dotenv.dotenv {directory = "."}[key]
 }
