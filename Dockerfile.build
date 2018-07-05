@@ -7,8 +7,6 @@ USER root
 ENV GRADLE_USER_HOME /opt
 COPY docker/gradle-config/ $GRADLE_USER_HOME/
 
-WORKDIR /opt
-
 # Copy config file
 COPY .env ./
 
@@ -19,5 +17,5 @@ COPY src ./src
 # Copy Data Access Layer project sources
 COPY dal ./dal
 
-# Execute build
-RUN gradle build --no-daemon
+ENTRYPOINT ["gradle", "--no-daemon"]
+CMD ["--help"]

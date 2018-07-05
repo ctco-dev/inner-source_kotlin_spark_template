@@ -19,3 +19,16 @@ services:
     command: -url=jdbc:postgresql://db:5432/postgres -user=postgres -password=example migrate
     depends_on:
       - db
+
+  service:
+    build:
+      context: .
+      dockerfile: Dockerfile.build
+    # TODO: don't connect to DB through external network, use the jdbc:postgresql://db:5432/postgres URL, by
+    #   providing environment variables here
+    # To do this, make the jOOQ plugin (in dal/build.gradle.kts) handle environment variables as well as the .env file
+    command: runShadow
+    ports:
+      - 4567:4567
+    depends_on:
+      - flyway

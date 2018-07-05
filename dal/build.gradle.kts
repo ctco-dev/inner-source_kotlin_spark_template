@@ -43,7 +43,6 @@ tasks.withType<KotlinCompile> {
 
 var ext2: ExtraPropertiesExtension = ext;
 jooqGenerator {
-    //    ext2.getProperties().forEach { println("${it.key}=${it.value}") }
     configuration("primary", project.java.sourceSets.getByName("main")) {
         configuration = jooqCodegenConfiguration {
             jdbc = jdbc {
