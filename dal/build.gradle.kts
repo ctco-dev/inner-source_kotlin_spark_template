@@ -40,14 +40,17 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-val ENV = System.getenv()
+fun getProperty(key: String): String {
+    return System.getProperty(key) ?: System.getenv(key)!!
+}
+
 jooqGenerator {
     configuration("primary", project.java.sourceSets.getByName("main")) {
         configuration = jooqCodegenConfiguration {
             jdbc = jdbc {
-                url = ENV["DB_URL"]
-                username = ENV["DB_USERNAME"]
-                password = ENV["DB_PASSWORD"]
+                url = getProperty("DB_URL")
+                username = getProperty("DB_USERNAME")
+                password = getProperty("DB_PASSWORD")
                 driver = "org.postgresql.Driver"
                 schema = "public"
             }

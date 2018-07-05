@@ -16,9 +16,11 @@ services:
       - 5432:5432
 
   flyway:
+    env_file:
+      - .env
     build:
       context: ./db
-    command: -url=jdbc:postgresql://db:5432/postgres -user=postgres -password=example migrate
+    command: -url=jdbc:postgresql://db:5432/postgres -user=${DB_USERNAME} -password=${DB_PASSWORD} migrate
     depends_on:
       - db
 

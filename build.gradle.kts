@@ -1,3 +1,4 @@
+import com.github.jengelman.gradle.plugins.shadow.internal.JavaJarExec
 import kotlin.collections.listOf
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
@@ -20,22 +21,29 @@ val jacksonVersion = "2.9.5"
 val junitVersion = "5.2.0"
 val jooqVersion = "3.11.0"
 
-repositories {
-    mavenCentral()
-}
-
-fun initEnvFile() {
-    val f = File(".env")
-    if (f.isFile) {
-        Properties().apply {
-            load(FileInputStream(f))
-            stringPropertyNames().forEach { k ->
-                System.setProperty(k, getProperty(k))
-            }
-        }
+allprojects {
+    repositories {
+        mavenCentral()
     }
 }
-initEnvFile()
+
+fun readEnvFile(filename: String): Map<String, String> {
+    val p = Properties()
+    val f = File(filename)
+    if (f.isFile) {
+        p.load(FileInputStream(f))
+    }
+    val mss = p as Map<String, String>
+    return mss
+}
+
+fun initSystemProps(envProps: Map<String, String>) {
+    envProps.forEach { envProp, envValue ->
+        System.setProperty(envProp, envValue)
+    }
+}
+val envProps = readEnvFile(".env")
+initSystemProps(envProps)
 
 dependencies {
     compile(kotlin("stdlib", kotlinVersion))
@@ -88,3 +96,6 @@ tasks.withType<KotlinCompile> {
 
 val shadowJar: ShadowJar by tasks
 shadowJar.archiveName = "app.jar"
+
+val runShadow: JavaJarExec = tasks["runShadow"] as JavaJarExec
+runShadow.environment.putAll(envProps)
