@@ -40,16 +40,18 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 
+val ENV = System.getenv()
+val dbUrl = ENV["DB_URL"]
+val dbUsername = ENV["DB_USERNAME"]
+val dbPassword = ENV["DB_PASSWORD"]
 
-var ext2: ExtraPropertiesExtension = ext;
 jooqGenerator {
     configuration("primary", project.java.sourceSets.getByName("main")) {
         configuration = jooqCodegenConfiguration {
             jdbc = jdbc {
-                // TODO: uses ${PROJECT_ROOT}/.env
-                url = "${ext2["DB_URL"]}"
-                username = "${ext2["DB_USERNAME"]}"
-                password = "${ext2["DB_PASSWORD"]}"
+                url = "${dbUrl}"
+                username = "${dbUsername}"
+                password = "${dbPassword}"
                 driver = "org.postgresql.Driver"
                 schema = "public"
             }

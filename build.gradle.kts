@@ -20,10 +20,6 @@ val jacksonVersion = "2.9.5"
 val junitVersion = "5.2.0"
 val jooqVersion = "3.11.0"
 
-allprojects {
-    loadProperties(".env", ext) // load local.properties into ext
-}
-
 repositories {
     mavenCentral()
 }
@@ -80,14 +76,3 @@ tasks.withType<KotlinCompile> {
 
 val shadowJar: ShadowJar by tasks
 shadowJar.archiveName = "app.jar"
-
-fun loadProperties(path: String, pr: ExtraPropertiesExtension) = loadProperties(file(path), pr)
-
-fun loadProperties(file: File, pr: ExtraPropertiesExtension) {
-    Properties().apply {
-        load(FileInputStream(file))
-        forEach { (k, v) ->
-            pr["$k"] = v
-        }
-    }
-}

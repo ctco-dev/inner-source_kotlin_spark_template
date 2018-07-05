@@ -7,9 +7,6 @@ USER root
 ENV GRADLE_USER_HOME /opt
 COPY docker/gradle-config/ $GRADLE_USER_HOME/
 
-# Copy config file
-COPY .env ./
-
 # Copy parent project sources
 COPY build.gradle.kts settings.gradle.kts ./
 COPY src ./src
