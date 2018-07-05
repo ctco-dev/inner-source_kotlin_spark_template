@@ -43,9 +43,9 @@ object Context {
 
     val dbClient: DataBaseClient = DataBaseClient(dbConnection);
 
-    private fun getProperty(key: String): String? =
-            System.getProperty(key) ?: io.github.cdimascio.dotenv.dotenv {
-                directory = "."
-                ignoreIfMissing = true
-            }[key]
+    /**
+     * First see if a Java system property is set, fallback to Environment property
+     * This is done to make overrides work via -D jvm args
+     */
+    private fun getProperty(key: String): String = System.getProperty(key) ?: System.getenv(key)!!
 }

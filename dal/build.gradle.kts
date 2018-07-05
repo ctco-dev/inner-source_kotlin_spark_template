@@ -6,7 +6,7 @@ val kotlinVersion = "1.2.50"
 val jooqVersion = "3.11.0"
 
 base {
-    archivesBaseName = "sparsgfdsgk-web-example"
+    archivesBaseName = "spark-web-example"
 }
 
 plugins {
@@ -41,14 +41,13 @@ tasks.withType<KotlinCompile> {
 }
 
 val ENV = System.getenv()
-
 jooqGenerator {
     configuration("primary", project.java.sourceSets.getByName("main")) {
         configuration = jooqCodegenConfiguration {
             jdbc = jdbc {
-                url = "${ENV["DB_URL"]}"
-                username = "${ENV["DB_USERNAME"]}"
-                password = "${ENV["DB_PASSWORD"]}"
+                url = ENV["DB_URL"]
+                username = ENV["DB_USERNAME"]
+                password = ENV["DB_PASSWORD"]
                 driver = "org.postgresql.Driver"
                 schema = "public"
             }

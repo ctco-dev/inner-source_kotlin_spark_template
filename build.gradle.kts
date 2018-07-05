@@ -24,13 +24,25 @@ repositories {
     mavenCentral()
 }
 
+fun initEnvFile() {
+    val f = File(".env")
+    if (f.isFile) {
+        Properties().apply {
+            load(FileInputStream(f))
+            stringPropertyNames().forEach { k ->
+                System.setProperty(k, getProperty(k))
+            }
+        }
+    }
+}
+initEnvFile()
+
 dependencies {
     compile(kotlin("stdlib", kotlinVersion))
     compile(kotlin("stdlib-jdk8", kotlinVersion))
     compile(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = kotlinCoroutinesVersion)
 
     compile(project(":dal"))
-    compile(group = "io.github.cdimascio", name = "java-dotenv", version = "3.1.1")
 
     compile(group = "com.sparkjava", name = "spark-core", version = sparkVersion)
     compile(group = "com.squareup.retrofit2", name = "retrofit", version = retrofitVersion)
