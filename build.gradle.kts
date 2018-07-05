@@ -4,25 +4,22 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 repositories {
-    mavenCentral()
-    jcenter()
     listOf(
             "https://artifact.swissre.com/internal",
             "https://artifact.swissre.com/external",
             "https://artifact.swissre.com/thirdparty",
-			"http://jcenter.bintray.com"
+            "http://jcenter.bintray.com"
     ).forEach { maven { url = uri(it) } }
 }
 
 buildscript {
     repositories {
-        jcenter()
         listOf(
                 "https://artifact.swissre.com/gradle-plugins",
                 "https://artifact.swissre.com/internal",
                 "https://artifact.swissre.com/external",
                 "https://artifact.swissre.com/thirdparty",
-				"http://jcenter.bintray.com"
+                "http://jcenter.bintray.com"
         ).forEach { maven { url = uri(it) } }
     }
 }
