@@ -42,6 +42,7 @@ fun initSystemProps(envProps: Map<String, String>) {
         System.setProperty(envProp, envValue)
     }
 }
+
 val envProps = readEnvFile(".env")
 initSystemProps(envProps)
 
@@ -99,3 +100,6 @@ shadowJar.archiveName = "app.jar"
 
 val runShadow: JavaJarExec = tasks["runShadow"] as JavaJarExec
 runShadow.environment.putAll(envProps)
+
+val test: Test = tasks["test"] as Test
+test.environment.putAll(envProps)
