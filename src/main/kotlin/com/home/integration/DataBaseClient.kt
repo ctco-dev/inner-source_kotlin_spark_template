@@ -6,7 +6,7 @@ import org.jooq.SQLDialect
 import org.jooq.impl.DSL
 import java.sql.Connection
 
-class DataBaseClient(val dbConnection: Connection) {
+open class DataBaseClient(val dbConnection: Connection) {
 
     fun proceedGetUsers() {
         executeQuery { dslContext ->
