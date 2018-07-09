@@ -3,6 +3,27 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+repositories {
+    listOf(
+            "https://artifact.swissre.com/internal",
+            "https://artifact.swissre.com/external",
+            "https://artifact.swissre.com/thirdparty",
+            "http://jcenter.bintray.com"
+    ).forEach { maven { url = uri(it) } }
+}
+
+buildscript {
+    repositories {
+        listOf(
+                "https://artifact.swissre.com/gradle-plugins",
+                "https://artifact.swissre.com/internal",
+                "https://artifact.swissre.com/external",
+                "https://artifact.swissre.com/thirdparty",
+                "http://jcenter.bintray.com"
+        ).forEach { maven { url = uri(it) } }
+    }
+}
+
 plugins {
     application
     kotlin("jvm") version "1.2.50"
@@ -13,10 +34,6 @@ plugins {
 val kotlinVersion = plugins.getPlugin(KotlinPluginWrapper::class.java).kotlinPluginVersion
 val kotlinCoroutinesVersion = "0.23.3"
 val junitVersion = "5.2.0"
-
-repositories {
-    mavenCentral()
-}
 
 dependencies {
     compile(kotlin("stdlib", kotlinVersion))
@@ -61,5 +78,6 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-val shadowJar: ShadowJar by tasks
-shadowJar.archiveName = "app.jar"
+tasks.withType<ShadowJar> {
+    archiveName = "app.jar"
+}
