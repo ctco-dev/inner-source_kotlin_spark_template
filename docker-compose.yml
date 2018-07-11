@@ -31,7 +31,6 @@ services:
       DB_URL: jdbc:postgresql://db:5432/postgres
     build:
       context: .
-      dockerfile: Dockerfile.build
     command: runShadow
     ports:
       - 4567:4567

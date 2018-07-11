@@ -1,12 +1,19 @@
 # Build
-FROM gradle:4.8.0-jdk10 as build
+# This is the latest gradle Docker image available on the client with JDK8 support
+FROM gradle:4.7.0-jdk8
+USER root
+
+# Make client repos available inside this image if necessary
+# And disable Gradle daemon
+ENV GRADLE_USER_HOME /opt
+COPY docker/gradle-config/ $GRADLE_USER_HOME/
+
+# Copy project sources
 COPY build.gradle.kts settings.gradle.kts ./
 COPY src ./src
-RUN gradle shadowJar --no-daemon
 
-# Run
-FROM openjdk:10-jre-slim as runtime
-WORKDIR root
-COPY --from=build /home/gradle/build/libs/app.jar .
-VOLUME /tmp
-CMD ["java", "-jar", "app.jar"]
+# Copy Data Access Layer project sources
+COPY dal ./dal
+
+ENTRYPOINT ["gradle", "--no-daemon"]
+CMD ["--help"]

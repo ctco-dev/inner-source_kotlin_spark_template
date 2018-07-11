@@ -9,7 +9,7 @@ To develop the application follow steps
  or
  * Run DB instance using docker-compose with flyway migration scripts: 
  `docker-compose up`
- * Create DB connection configuretion in `.env` file:
+ * Create DB connection configuration in `.env` file:
 ```properties
 DB_URL=jdbc:postgresql://hostname.of.remote.docker.host:5432/postgres
 DB_USERNAME=postgres
