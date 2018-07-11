@@ -3,9 +3,11 @@ out
 .gradle
 /build/
 dal/build
+*.ipr
+*.iws
+*.iml
 
 # Files below aren't commited, but should usually be present
-# TODO: See <WIKI URL> for details
 .env
 docker-compose.override.yml
 /docker/gradle-config/init.gradle
