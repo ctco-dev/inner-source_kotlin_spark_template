@@ -2,7 +2,7 @@ import kotlin.collections.listOf
 import com.rohanprabhu.gradle.plugins.kdjooq.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val kotlinVersion = "1.2.50"
+val kotlinVersion = "1.2.51"
 val jooqVersion = "3.11.0"
 
 base {
@@ -57,8 +57,7 @@ jooqGenerator {
 
             generator = generator {
                 target = target {
-                    // TODO: package name should be better
-                    packageName = "com.example.jooq"
+                    packageName = "com.home.jooq"
                     directory = "${project.buildDir}/generated/jooq/primary"
                 }
             }

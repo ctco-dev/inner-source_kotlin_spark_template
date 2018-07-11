@@ -8,13 +8,12 @@ import java.io.FileInputStream
 
 plugins {
     application
-    kotlin("jvm") version "1.2.50"
+    kotlin("jvm") version "1.2.51"
     id("com.github.johnrengelman.shadow").version("2.0.4")
 }
 
 // get the Kotlin version from the Kotlin plugin definition
 val kotlinVersion = plugins.getPlugin(KotlinPluginWrapper::class.java).kotlinPluginVersion
-val kotlinCoroutinesVersion = "0.23.3"
 val sparkVersion = "2.7.2"
 val retrofitVersion = "2.4.0"
 val jacksonVersion = "2.9.5"
@@ -49,7 +48,6 @@ initSystemProps(envProps)
 dependencies {
     compile(kotlin("stdlib", kotlinVersion))
     compile(kotlin("stdlib-jdk8", kotlinVersion))
-    compile(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = kotlinCoroutinesVersion)
 
     compile(project(":dal"))
 
