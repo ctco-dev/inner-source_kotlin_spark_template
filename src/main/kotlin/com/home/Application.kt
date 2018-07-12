@@ -3,10 +3,7 @@ package com.home
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.home.controllers.Controller
 import com.home.domain.DataRepository
-import spark.Filter
-import spark.Request
-import spark.Response
-import spark.Route
+import spark.*
 import spark.Spark.*
 import java.util.logging.Logger
 
@@ -17,6 +14,9 @@ class Application(val controller: Controller,
     }
 
     internal fun start() {
+        //TODO: make the port configurable
+        port(4567)
+
         before(Filter { Request, response: Response -> response.type("application/json") })
 
         get("/aggregate", route(controller::getAggregate))

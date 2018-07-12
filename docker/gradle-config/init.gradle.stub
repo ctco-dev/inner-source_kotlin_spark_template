@@ -1,0 +1,16 @@
+ext {
+  repos = [
+    <INTERNAL_DEPENDENCY_REPO(S)>
+  ]
+}
+
+allprojects {
+  repositories { repos.each { repo -> maven { url repo } } }
+  buildscript { repositories { repos.each { repo -> maven { url repo } } } }
+}
+
+settingsEvaluated { settings ->
+  settings.pluginManagement.repositories {
+    maven { url     <INTERNAL_GRADLE_PLUGIN_REPO(S)>}
+  }
+}

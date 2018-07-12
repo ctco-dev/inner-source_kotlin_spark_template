@@ -2,3 +2,13 @@ out
 .idea
 .gradle
 /build/
+dal/build
+*.ipr
+*.iws
+*.iml
+
+# Files below aren't commited, but should usually be present
+.env
+docker-compose.override.yml
+/docker/gradle-config/init.gradle
+/docker/gradle-config/gradle.properties

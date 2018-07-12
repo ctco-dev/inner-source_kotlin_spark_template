@@ -1,0 +1,11 @@
+org.gradle.daemon=false
+
+# Proxy settings: generally discouraged, use with care
+systemProp.http.proxyHost=<HTTP_PROXY_HOST>
+systemProp.http.proxyProtocol=http
+systemProp.http.proxyPort=<HTTP_PROXY_PORT>
+systemProp.http.nonProxyHosts=<NON_PROXY_HOSTS>|localhost
+systemProp.https.proxyHost=<HTTPS_PROXY_HOST>
+systemProp.https.proxyProtocol=http
+systemProp.https.proxyPort=<HTTPS_PROXY_PORT>
+systemProp.https.nonProxyHosts=<NON_PROXY_HOSTS>|localhost

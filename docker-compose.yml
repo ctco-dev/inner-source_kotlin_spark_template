@@ -1,26 +1,38 @@
 # Use postgres/example user/password credentials
+# When using 'docker-compose up' it's possible that the Flyway container starts before the database is up, causing an error
+# In this case just do a relaunch.
+# TODO: integrate wait-for-it.sh or something to wait until DB is up before running Flyway
+
 version: '3.1'
 
-
 services:
-
   db:
     image: postgres:10.4-alpine
-    restart: always
     environment:
       POSTGRES_PASSWORD: example
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+    ports:
+      - 5432:5432
 
   flyway:
-    image: boxfuse/flyway:5.1.1-alpine
-    restart: always
-    volumes:
-      - ./db:/flyway/sql
-    command: -url=jdbc:postgresql://db:5432/postgres -user=postgres -password=example migrate
+    env_file:
+      - .env
+    build:
+      context: ./db
+    command: -url=jdbc:postgresql://db:5432/postgres -user=${DB_USERNAME} -password=${DB_PASSWORD} migrate
     depends_on:
       - db
 
-  adminer:
-    image: adminer:4.6.2-standalone
-    restart: always
+  service:
+    env_file:
+      - .env
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/postgres
+    build:
+      context: .
+    command: runShadow
     ports:
-      - 8080:8080
+      - 4567:4567
+    depends_on:
+      - flyway

@@ -1,6 +1,7 @@
 package com.home.controllers
 
 import com.home.domain.DataRepository
+import com.home.integration.DataBaseClient
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -19,7 +20,8 @@ class ControllerTest {
     internal fun setUp() {
         controller = Controller(
                 repository = DataRepository,
-                executorService = Executors.newSingleThreadExecutor()
+                executorService = Executors.newSingleThreadExecutor(),
+                dataBaseClient = mock(DataBaseClient::class.java)
         )
     }
 
