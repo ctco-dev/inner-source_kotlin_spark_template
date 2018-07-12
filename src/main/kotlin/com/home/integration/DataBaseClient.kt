@@ -1,6 +1,6 @@
 package com.home.integration;
 
-import com.example.jooq.tables.User
+import com.home.jooq.tables.User
 import org.jooq.DSLContext
 import org.jooq.SQLDialect
 import org.jooq.impl.DSL
