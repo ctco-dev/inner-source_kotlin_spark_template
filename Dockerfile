@@ -1,6 +1,6 @@
 FROM openjdk:8u171-alpine
 
-WORKDIR /home/app
+WORKDIR /usr/src/app
 
 # Make client repos available inside this image if necessary
 # And disable Gradle daemon
