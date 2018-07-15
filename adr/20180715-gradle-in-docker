@@ -1,0 +1,23 @@
+# Using jdk8-u171 as a base Docker image to do the build and run of the app
+
+## Status
+
+Pending
+
+## Context 
+
+Using [gradle:x.x.x Docker images](https://hub.docker.com/_/gradle/) is problematic, since there might be no direct access to the Docker Hub, and the existing mirrors may not contain the latest Gradle Docker image, which we would like. 
+
+_NB: Reason, why we'd like to use latest stable Gradle is that Kotlin Gradle DSL is very dynamic, and every Gradle release significantly improves the experience._
+
+To avoid this, we may opt to use [OpenJDK](https://hub.docker.com/_/openjdk/) as the base Docker image, and use Gradle Wrapper with the version we choose to build the app.
+
+`openjdk:8u171-alpine` was chosen instead of `openjdk:10-jdk` because jOOQ doesn't seem to support JDK 10.
+
+## Decision 
+
+Pending
+
+## Consequences  
+
+The app will be build with the Gradle Wrapper in the Dockerfile. This will increase the time to build, since Gradle runtime will have to be downloaded. This will, however, give us more ease and flexibility when choosing the exact version of Gradle to use. Besides, Gradle version will be set in a single place: `./gradle/wrapper/gradle-wrapper.properties`.
