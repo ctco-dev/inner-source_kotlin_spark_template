@@ -20,4 +20,4 @@ Pending
 
 ## Consequences  
 
-The app will be build with the Gradle Wrapper in the Dockerfile. This will increase the time to build, since Gradle runtime will have to be downloaded. This will, however, give us more ease and flexibility when choosing the exact version of Gradle to use. Besides, Gradle version will be set in a single place: `./gradle/wrapper/gradle-wrapper.properties`.
+The app will be built with the Gradle Wrapper in the Dockerfile. This will increase the time to build, since Gradle runtime will have to be downloaded. This will, however, give us more ease and flexibility when choosing the exact version of Gradle to use. Besides, Gradle version will be set in a single place: `./gradle/wrapper/gradle-wrapper.properties`.
