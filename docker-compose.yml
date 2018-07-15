@@ -18,11 +18,9 @@ services:
   flyway:
     env_file:
       - .env
-    environment:
-      DB_URL: jdbc:postgresql://db:5432/postgres
     build:
-      context: .
-      dockerfile: Dockerfile.db
+      context: ./db
+    command: -url=jdbc:postgresql://db:5432/postgres -user=${DB_USERNAME} -password=${DB_PASSWORD} migrate
     depends_on:
       - db
 
