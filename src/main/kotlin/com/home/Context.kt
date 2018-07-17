@@ -5,10 +5,9 @@ import com.fasterxml.jackson.module.paramnames.ParameterNamesModule
 import com.home.integration.DataBaseClient
 import com.home.integration.DataService
 import com.home.integration.RemoteDataClient
+import org.apache.commons.dbcp2.BasicDataSource
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
-import java.sql.Connection
-import java.sql.DriverManager
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -32,16 +31,17 @@ object Context {
 
     val remoteDataClient: RemoteDataClient = RemoteDataClient(dataService)
 
-    val dbConnection: Connection
+    private val dataSource: BasicDataSource
         get() {
-            val url = getProperty("DB_URL")
-            val password = getProperty("DB_PASSWORD")
-            val userName = getProperty("DB_USERNAME")
-
-            return DriverManager.getConnection(url, userName, password)
+            val basicDataSource = BasicDataSource()
+            basicDataSource.url = getProperty("DB_URL")
+            basicDataSource.username = getProperty("DB_USERNAME")
+            basicDataSource.password = getProperty("DB_PASSWORD")
+            basicDataSource.initialSize = 5
+            return basicDataSource
         }
 
-    val dbClient: DataBaseClient = DataBaseClient(dbConnection);
+    val dbClient: DataBaseClient = DataBaseClient(dataSource);
 
     /**
      * First see if a Java system property is set, fallback to Environment property

@@ -60,6 +60,7 @@ dependencies {
 
     compile(group = "org.jooq", name = "jooq", version = jooqVersion)
     compile(group = "org.postgresql", name = "postgresql", version = "42.2.2")
+    compile(group = "org.apache.commons", name = "commons-dbcp2", version = "2.4.0")
 
     testCompile(kotlin("stdlib", kotlinVersion))
     testImplementation(group = "org.junit", name = "junit-bom", version = junitVersion)
