@@ -12,8 +12,11 @@ COPY docker/gradle-config/ $GRADLE_USER_HOME/
 COPY build.gradle.kts settings.gradle.kts ./
 COPY src ./src
 
+# Copy Database migrations sources and scripts
+COPY db ./db
+
 # Copy Data Access Layer project sources
 COPY dal ./dal
 
-ENTRYPOINT ["gradle", "--no-daemon"]
+ENTRYPOINT ["gradle", "--no-daemon", "-s", "-i"]
 CMD ["--help"]

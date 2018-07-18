@@ -25,6 +25,7 @@ dependencies {
     jooqGeneratorRuntime(group = "org.jooq", name = "jooq-codegen", version = jooqVersion)
     jooqGeneratorRuntime("org.postgresql:postgresql:42.2.2")
 }
+tasks["build"].dependsOn(":db:flywayMigrate")
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
