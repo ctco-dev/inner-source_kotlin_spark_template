@@ -15,7 +15,7 @@ object DataRepository {
     }
 
     fun create(data: Data) {
-        val r: Random = Random()
+        val r = Random()
         data.id = r.nextLong()
         this.update(data)
     }

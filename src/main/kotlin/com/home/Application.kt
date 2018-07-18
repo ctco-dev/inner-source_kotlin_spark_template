@@ -3,12 +3,15 @@ package com.home
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.home.controllers.Controller
 import com.home.domain.DataRepository
-import spark.*
+import spark.Filter
+import spark.Request
+import spark.Response
+import spark.Route
 import spark.Spark.*
 import java.util.logging.Logger
 
 class Application(val controller: Controller,
-                  val objectMapper: ObjectMapper = api().objectMapper ) {
+                  val objectMapper: ObjectMapper = context().objectMapper) {
     companion object {
         val log: Logger = Logger.getLogger(this::class.java.simpleName)
     }
@@ -17,7 +20,7 @@ class Application(val controller: Controller,
         //TODO: make the port configurable
         port(4567)
 
-        before(Filter { Request, response: Response -> response.type("application/json") })
+        before(Filter { _, response: Response -> response.type("application/json") })
 
         get("/aggregate", route(controller::getAggregate))
         get("/data/:id", route(controller::getData))

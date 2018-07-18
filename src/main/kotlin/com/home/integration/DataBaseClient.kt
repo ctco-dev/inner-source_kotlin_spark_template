@@ -21,7 +21,7 @@ open class DataBaseClient(val dataSource: BasicDataSource) {
 
     fun proceedCreateUser() {
         executeQuery { dslContext ->
-            val insertResult = dslContext.insertInto(User.USER,
+            dslContext.insertInto(User.USER,
                     User.USER.FIRSTNAME, User.USER.LASTNAME)
                     .values("Valerij", "Meladze")
                     .execute()
