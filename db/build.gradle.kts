@@ -5,7 +5,8 @@ plugins {
 }
 
 dependencies {
-    compile(kotlin("stdlib", embeddedKotlinVersion))
+//    compile(kotlin("stdlib", embeddedKotlinVersion)) // mybe better use kotlin version from gradle>
+    compile(kotlin("stdlib", "1.2.51"))
     compile("org.postgresql:postgresql:42.2.2")
 }
 
