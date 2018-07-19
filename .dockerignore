@@ -1,7 +1,11 @@
 .idea
 .gradle
-/build/
-/out/
+./build/
+./out/
+./dal/build/
+./dal/out/
+./db/build/
+./db/out/
 
 docker/gradle-config/gradle.properties.stub
 docker/gradle-config/init.gradle.stub
