@@ -15,7 +15,6 @@ plugins {
 // get the Kotlin version from the Kotlin plugin definition
 val kotlinVersion = plugins.getPlugin(KotlinPluginWrapper::class.java).kotlinPluginVersion
 val sparkVersion = "2.7.2"
-val retrofitVersion = "2.4.0"
 val jacksonVersion = "2.9.5"
 val junitVersion = "5.2.0"
 val jooqVersion = "3.11.0"
@@ -52,14 +51,13 @@ dependencies {
     compile(project(":dal"))
 
     compile(group = "com.sparkjava", name = "spark-core", version = sparkVersion)
-    compile(group = "com.squareup.retrofit2", name = "retrofit", version = retrofitVersion)
-    compile(group = "com.squareup.retrofit2", name = "converter-jackson", version = retrofitVersion)
     compile(group = "com.fasterxml.jackson.core", name = "jackson-databind", version = jacksonVersion)
     compile(group = "com.fasterxml.jackson.module", name = "jackson-module-parameter-names", version = jacksonVersion)
     compile(group = "org.slf4j", name = "slf4j-simple", version = "1.7.25")
 
     compile(group = "org.jooq", name = "jooq", version = jooqVersion)
     compile(group = "org.postgresql", name = "postgresql", version = "42.2.2")
+    compile(group = "org.apache.commons", name = "commons-dbcp2", version = "2.4.0")
 
     testCompile(kotlin("stdlib", kotlinVersion))
     testImplementation(group = "org.junit", name = "junit-bom", version = junitVersion)

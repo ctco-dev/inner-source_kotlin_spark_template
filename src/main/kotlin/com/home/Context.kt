@@ -3,45 +3,28 @@ package com.home
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule
 import com.home.integration.DataBaseClient
-import com.home.integration.DataService
-import com.home.integration.RemoteDataClient
-import retrofit2.Retrofit
-import retrofit2.converter.jackson.JacksonConverterFactory
-import java.sql.Connection
-import java.sql.DriverManager
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
+import org.apache.commons.dbcp2.BasicDataSource
 
-fun api(): Context = Context
+fun context(): Context = Context
 
 /**
  * Note that this is an `object`, so we have a guarantee that this is a Singleton
  */
 object Context {
-    val executorService: ExecutorService = Executors.newFixedThreadPool(10)
-
     val objectMapper: ObjectMapper = ObjectMapper()
             .registerModule(ParameterNamesModule())
 
-    val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl("http://localhost:4567/")
-            .addConverterFactory(JacksonConverterFactory.create(objectMapper))
-            .build()
-
-    val dataService: DataService = retrofit.create(DataService::class.java)
-
-    val remoteDataClient: RemoteDataClient = RemoteDataClient(dataService)
-
-    val dbConnection: Connection
+    private val dataSource: BasicDataSource
         get() {
-            val url = getProperty("DB_URL")
-            val password = getProperty("DB_PASSWORD")
-            val userName = getProperty("DB_USERNAME")
-
-            return DriverManager.getConnection(url, userName, password)
+            val basicDataSource = BasicDataSource()
+            basicDataSource.url = getProperty("DB_URL")
+            basicDataSource.username = getProperty("DB_USERNAME")
+            basicDataSource.password = getProperty("DB_PASSWORD")
+            basicDataSource.initialSize = 5
+            return basicDataSource
         }
 
-    val dbClient: DataBaseClient = DataBaseClient(dbConnection);
+    val dbClient: DataBaseClient = DataBaseClient(dataSource);
 
     /**
      * First see if a Java system property is set, fallback to Environment property

@@ -1,24 +1,19 @@
 package com.home.controllers
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.home.api
+import com.home.context
 import com.home.domain.DataRepository
 import com.home.dto.Aggregate
 import com.home.dto.Data
 import com.home.integration.DataBaseClient
-import com.home.integration.RemoteDataClient
 import spark.Request
 import spark.Response
 import spark.Spark
 import java.io.IOException
-import java.util.concurrent.ExecutionException
-import java.util.concurrent.ExecutorService
 
 class Controller(val repository: DataRepository,
-                 val objectMapper: ObjectMapper = api().objectMapper,
-                 val remoteDataClient: RemoteDataClient = api().remoteDataClient,
-                 val executorService: ExecutorService = api().executorService,
-                 val dataBaseClient: DataBaseClient = api().dbClient) {
+                 val objectMapper: ObjectMapper = context().objectMapper,
+                 val dataBaseClient: DataBaseClient = context().dbClient) {
 
     private fun Request.getId(): Long {
         return this.params("id").toLong()
@@ -75,17 +70,17 @@ class Controller(val repository: DataRepository,
         return data
     }
 
-    @Throws(ExecutionException::class, InterruptedException::class)
-    fun getAggregate(request: Request, response: Response): Aggregate {
+    @Throws(IOException::class)
+    fun getAggregate(@Suppress("UNUSED_PARAMETER") request: Request, response: Response): Aggregate {
 
         dataBaseClient.proceedCreateUser()
         dataBaseClient.proceedGetUsers()
 
-        val data1Future = executorService.submit<Data> { remoteDataClient.getRemoteData("1", 600) }
-        val data2 = remoteDataClient.getRemoteData("2", 600)
+        val data1 = repository.read(1)
+        val data2 = repository.read(2)
 
-        val results = setOf(data1Future.get(), data2!!)
-        return Aggregate(results)
+        response.status(200)
+        return Aggregate(setOf(data1, data2))
     }
 
 }

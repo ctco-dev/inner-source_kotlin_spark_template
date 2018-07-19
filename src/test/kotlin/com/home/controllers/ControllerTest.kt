@@ -10,7 +10,6 @@ import org.mockito.Mockito.*
 import org.mockito.junit.jupiter.MockitoExtension
 import spark.Request
 import spark.Response
-import java.util.concurrent.Executors
 
 @ExtendWith(MockitoExtension::class)
 class ControllerTest {
@@ -20,7 +19,6 @@ class ControllerTest {
     internal fun setUp() {
         controller = Controller(
                 repository = DataRepository,
-                executorService = Executors.newSingleThreadExecutor(),
                 dataBaseClient = mock(DataBaseClient::class.java)
         )
     }
