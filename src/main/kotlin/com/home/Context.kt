@@ -3,8 +3,6 @@ package com.home
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule
 import com.home.integration.DataBaseClient
-import com.home.integration.DataService
-import com.home.integration.RemoteDataClient
 import org.apache.commons.dbcp2.BasicDataSource
 
 fun context(): Context = Context
