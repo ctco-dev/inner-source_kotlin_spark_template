@@ -27,5 +27,5 @@ COPY db ./db
 # Copy Data Access Layer project sources
 COPY dal ./dal
 
-ENTRYPOINT ["./gradlew", "--no-daemon", "-s", "-d"]
+ENTRYPOINT ["./gradlew", "--no-daemon", "-s", "-i"]
 CMD ["--help"]
