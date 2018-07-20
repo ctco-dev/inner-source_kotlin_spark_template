@@ -5,25 +5,32 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 val kotlinVersion = "1.2.51"
 val jooqVersion = "3.11.0"
 
+val junitVersion = "5.2.0"
+
 base {
     archivesBaseName = "spark-web-example"
 }
 
 plugins {
-    `java-library`
-    id("com.rohanprabhu.kotlin-dsl-jooq") version "0.3.1"
+    distribution
     kotlin("jvm")
 }
 
 dependencies {
-    compile(kotlin("stdlib", kotlinVersion))
-    compile("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "0.22.5")
-
+    compile(group = "org.postgresql", name = "postgresql", version = "42.2.2")
     compile(group = "org.jooq", name = "jooq", version = jooqVersion)
 
-    jooqGeneratorRuntime(group = "org.jooq", name = "jooq-meta", version = jooqVersion)
-    jooqGeneratorRuntime(group = "org.jooq", name = "jooq-codegen", version = jooqVersion)
-    jooqGeneratorRuntime("org.postgresql:postgresql:42.2.2")
+    testCompile(group = "org.jooq", name = "jooq-meta", version = jooqVersion)
+    testCompile(group = "org.jooq", name = "jooq-codegen", version = jooqVersion)
+    testCompile(group = "org.junit", name = "junit-bom", version = junitVersion)
+    testImplementation(group = "org.junit", name = "junit-bom", version = junitVersion)
+    testCompile(kotlin("stdlib", kotlinVersion))
+    testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api")
+    testRuntimeOnly(group = "org.junit.jupiter", name = "junit-jupiter-engine")
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
 
 java {
@@ -42,29 +49,4 @@ tasks.withType<KotlinCompile> {
 
 fun getProperty(key: String): String {
     return System.getProperty(key) ?: System.getenv(key)!!
-}
-
-jooqGenerator {
-    configuration("primary", project.java.sourceSets.getByName("main")) {
-        configuration = jooqCodegenConfiguration {
-            jdbc = jdbc {
-                url = getProperty("DB_URL")
-                username = getProperty("DB_USERNAME")
-                password = getProperty("DB_PASSWORD")
-                driver = "org.postgresql.Driver"
-                schema = "public"
-            }
-
-            generator = generator {
-                target = target {
-                    packageName = "com.home.jooq"
-                    directory = "${project.buildDir}/generated/jooq/primary"
-                }
-            }
-        }
-    }
-}
-
-tasks.withType<JooqCodeGenerationTask> {
-    dependsOn(":db:flywayMigrate")
 }
