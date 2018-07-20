@@ -57,6 +57,8 @@ dependencies {
 
     compile(group = "org.apache.commons", name = "commons-dbcp2", version = "2.4.0")
 
+    compile(group = "com.typesafe", name = "config", version = "1.3.3")
+
     testCompile(kotlin("stdlib", kotlinVersion))
     testImplementation(group = "org.junit", name = "junit-bom", version = junitVersion)
     testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api")

@@ -11,24 +11,20 @@ fun context(): Context = Context
  * Note that this is an `object`, so we have a guarantee that this is a Singleton
  */
 object Context {
+    private val settings: Settings = Settings()
+
     val objectMapper: ObjectMapper = ObjectMapper()
             .registerModule(ParameterNamesModule())
 
     private val dataSource: BasicDataSource
         get() {
             val basicDataSource = BasicDataSource()
-            basicDataSource.url = getProperty("DB_URL")
-            basicDataSource.username = getProperty("DB_USERNAME")
-            basicDataSource.password = getProperty("DB_PASSWORD")
+            basicDataSource.url = settings.dbUrl
+            basicDataSource.username = settings.dbUsername
+            basicDataSource.password = settings.dbPassword
             basicDataSource.initialSize = 5
             return basicDataSource
         }
 
     val dbClient: DataBaseClient = DataBaseClient(dataSource);
-
-    /**
-     * First see if a Java system property is set, fallback to Environment property
-     * This is done to make overrides work via -D jvm args
-     */
-    private fun getProperty(key: String): String = System.getProperty(key) ?: System.getenv(key)!!
 }
