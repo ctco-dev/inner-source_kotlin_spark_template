@@ -7,7 +7,7 @@ import org.jooq.SQLDialect
 import org.jooq.impl.DSL
 import java.sql.Connection
 
-open class DataBaseClient(val dataSource: BasicDataSource) {
+open class DataBaseClient(private val dataSource: BasicDataSource) {
 
     fun proceedGetUsers() {
         executeQuery { dslContext ->
@@ -28,10 +28,20 @@ open class DataBaseClient(val dataSource: BasicDataSource) {
         }
     }
 
-    fun executeQuery(function: (DSLContext) -> Unit) {
-        val connection : Connection = dataSource.connection
+    private fun executeQuery(function: (DSLContext) -> Unit) {
+        val connection: Connection = dataSource.connection
         connection.use { dbConnection ->
             DSL.using(dbConnection, SQLDialect.POSTGRES).use(function)
+        }
+    }
+
+    fun isConnectionAlive(): Boolean {
+        return try {
+            dataSource.connection
+            true
+        } catch (e: Exception) {
+            false
+        } finally {
         }
     }
 
