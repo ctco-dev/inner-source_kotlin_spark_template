@@ -27,5 +27,8 @@ COPY db ./db
 # Copy Data Access Layer project sources
 COPY dal ./dal
 
+# Convert gradlew file to unix format
+RUN ["dos2unix", "./gradlew"]
+
 ENTRYPOINT ["./gradlew", "--no-daemon", "-s", "-i"]
 CMD ["--help"]
