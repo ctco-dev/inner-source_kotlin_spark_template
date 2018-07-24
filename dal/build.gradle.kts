@@ -1,5 +1,4 @@
 import kotlin.collections.listOf
-import com.rohanprabhu.gradle.plugins.kdjooq.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val kotlinVersion = "1.2.51"
