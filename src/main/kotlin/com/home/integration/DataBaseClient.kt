@@ -5,9 +5,8 @@ import org.apache.commons.dbcp2.BasicDataSource
 import org.jooq.DSLContext
 import org.jooq.SQLDialect
 import org.jooq.impl.DSL
-import java.sql.Connection
 
-open class DataBaseClient(val dataSource: BasicDataSource) {
+open class DataBaseClient(private val dataSource: BasicDataSource) {
 
     fun proceedGetUsers() {
         executeQuery { dslContext ->
@@ -28,10 +27,20 @@ open class DataBaseClient(val dataSource: BasicDataSource) {
         }
     }
 
-    fun executeQuery(function: (DSLContext) -> Unit) {
-        val connection : Connection = dataSource.connection
-        connection.use { dbConnection ->
+    private fun executeQuery(function: (DSLContext) -> Unit) {
+        dataSource.connection.use { dbConnection ->
             DSL.using(dbConnection, SQLDialect.POSTGRES).use(function)
+        }
+    }
+
+    @Throws(Exception::class)
+    fun getDatabaseVersion(): String {
+        return dataSource.connection.use { dbConnection ->
+            val rs = dbConnection.createStatement().executeQuery("select max(version) as version from flyway_schema_history")
+            if (!rs.next()) {
+                throw IllegalStateException()
+            }
+            rs.getString("version")
         }
     }
 

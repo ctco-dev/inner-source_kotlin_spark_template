@@ -3,6 +3,9 @@ package com.home
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.home.controllers.Controller
 import com.home.domain.DataRepository
+import com.home.handlers.healthHandler
+import com.home.handlers.readinessHandler
+import com.home.handlers.versionHandler
 import spark.Filter
 import spark.Request
 import spark.Response
@@ -21,6 +24,11 @@ class Application(val controller: Controller,
         port(4567)
 
         before(Filter { _, response: Response -> response.type("application/json") })
+
+        // Health, readiness and version endpoints
+        get("/health", healthHandler)
+        get("/readiness", route(readinessHandler))
+        get("/version", route(versionHandler))
 
         get("/aggregate", route(controller::getAggregate))
         get("/data/:id", route(controller::getData))
