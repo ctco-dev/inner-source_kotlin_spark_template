@@ -3,6 +3,7 @@ package com.home
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule
 import com.home.integration.DataBaseClient
+import com.typesafe.config.ConfigFactory
 import org.apache.commons.dbcp2.BasicDataSource
 
 fun context(): Context = Context
@@ -11,7 +12,9 @@ fun context(): Context = Context
  * Note that this is an `object`, so we have a guarantee that this is a Singleton
  */
 object Context {
-    private val settings: Settings = Settings()
+    private val config = ConfigFactory.load("env.properties")
+
+    private val settings: Settings = Settings(config)
 
     val objectMapper: ObjectMapper = ObjectMapper()
             .registerModule(ParameterNamesModule())
