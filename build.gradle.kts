@@ -55,8 +55,6 @@ dependencies {
     compile(group = "com.fasterxml.jackson.module", name = "jackson-module-parameter-names", version = jacksonVersion)
     compile(group = "org.slf4j", name = "slf4j-simple", version = "1.7.25")
 
-    compile(group = "org.jooq", name = "jooq", version = jooqVersion)
-    compile(group = "org.postgresql", name = "postgresql", version = "42.2.2")
     compile(group = "org.apache.commons", name = "commons-dbcp2", version = "2.4.0")
 
     testCompile(kotlin("stdlib", kotlinVersion))

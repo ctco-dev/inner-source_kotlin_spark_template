@@ -15,15 +15,6 @@ services:
     ports:
       - 5432:5432
 
-  flyway:
-    env_file:
-      - .env
-    build:
-      context: ./db
-    command: -url=jdbc:postgresql://db:5432/postgres -user=${DB_USERNAME} -password=${DB_PASSWORD} migrate
-    depends_on:
-      - db
-
   service:
     env_file:
       - .env
@@ -35,5 +26,3 @@ services:
     command: runShadow
     ports:
       - 4567:4567
-    depends_on:
-      - flyway
