@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val kotlinVersion = "1.2.51"
 val jooqVersion = "3.11.0"
+val postgreVersion = "42.2.2"
 
 base {
     archivesBaseName = "spark-web-example"
@@ -18,11 +19,11 @@ plugins {
 dependencies {
     compile(kotlin("stdlib", kotlinVersion))
     compile(group = "org.jooq", name = "jooq", version = jooqVersion)
-    compile(group = "org.postgresql", name = "postgresql", version = "42.2.2")
+    compile(group = "org.postgresql", name = "postgresql", version = postgreVersion)
 
     jooqGeneratorRuntime(group = "org.jooq", name = "jooq-meta", version = jooqVersion)
     jooqGeneratorRuntime(group = "org.jooq", name = "jooq-codegen", version = jooqVersion)
-    jooqGeneratorRuntime("org.postgresql:postgresql:42.2.2")
+    jooqGeneratorRuntime(group = "org.postgresql", name = "postgresql", version = postgreVersion)
 }
 
 tasks.withType<Test> {
