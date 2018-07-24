@@ -32,5 +32,11 @@ To perform it just do `docker-compose up -d` in your console
 
 ## Development mode
 
-* Reinitialize gradle project in your IDE to generate sources for Data Access Layer `dal` or build:
-`./gradlew build`
+### Applying Flyway migrations
+* Run `./gradlew flywayMigrate`
+
+### Generating sources for Data Access Layer
+* Run `./gradlew clean build -PjooqCodegen`
+
+### Running application
+* Run `./gradlew runShadow` 
