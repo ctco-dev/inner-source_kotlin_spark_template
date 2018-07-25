@@ -31,5 +31,5 @@ object Context {
             return basicDataSource
         }
 
-    val dbClient: DataBaseClient = DataBaseClient(dataSource);
+    val dbClient: DataBaseClient = DataBaseClient(dataSource)
 }
