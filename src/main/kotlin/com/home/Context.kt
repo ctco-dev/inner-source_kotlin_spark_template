@@ -17,6 +17,7 @@ object Context {
     private val settings: Settings = Settings(config)
 
     val sparkPort: Int = settings.sparkPort
+    val allowOrigin: String = settings.allowOrigin
 
     val objectMapper: ObjectMapper = ObjectMapper()
             .registerModule(ParameterNamesModule())

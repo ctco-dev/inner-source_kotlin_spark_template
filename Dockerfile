@@ -27,6 +27,9 @@ COPY db ./db
 # Copy Data Access Layer project sources
 COPY dal ./dal
 
+ARG APP_VERSION_ARG
+ENV APP_VERSION=$APP_VERSION_ARG
+
 # Convert gradlew file to unix format
 RUN ["dos2unix", "./gradlew"]
 
