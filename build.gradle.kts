@@ -93,6 +93,3 @@ tasks.withType<KotlinCompile> {
 
 val shadowJar: ShadowJar by tasks
 shadowJar.archiveName = "app.jar"
-
-val test: Test = tasks["test"] as Test
-test.environment.putAll(envProps)

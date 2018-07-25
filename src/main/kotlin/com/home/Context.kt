@@ -16,6 +16,8 @@ object Context {
 
     private val settings: Settings = Settings(config)
 
+    val sparkPort: Int = settings.sparkPort
+
     val objectMapper: ObjectMapper = ObjectMapper()
             .registerModule(ParameterNamesModule())
 
