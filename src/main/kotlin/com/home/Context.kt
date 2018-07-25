@@ -12,7 +12,7 @@ fun context(): Context = Context
  * Note that this is an `object`, so we have a guarantee that this is a Singleton
  */
 object Context {
-    private val config = ConfigFactory.load("env.properties")
+    private val config = ConfigFactory.load()
 
     private val settings: Settings = Settings(config)
 
