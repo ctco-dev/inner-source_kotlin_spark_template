@@ -16,6 +16,7 @@ import java.util.logging.Logger
 
 class Application(val controller: Controller,
                   val sparkPort: Int = context().sparkPort,
+                  val allowOrigin: String = context().allowOrigin,
                   val objectMapper: ObjectMapper = context().objectMapper) {
     companion object {
         val log: Logger = Logger.getLogger(this::class.java.simpleName)
@@ -26,7 +27,7 @@ class Application(val controller: Controller,
 
         before(Filter { _, response: Response ->
             response.type("application/json")
-            response.header("Access-Control-Allow-Origin", "*")
+            response.header("Access-Control-Allow-Origin", allowOrigin)
         })
 
         options("/*", optionsHandler)
