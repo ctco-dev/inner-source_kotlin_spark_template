@@ -9,3 +9,5 @@
 
 docker/gradle-config/gradle.properties.stub
 docker/gradle-config/init.gradle.stub
+
+src/main/resources/application.*

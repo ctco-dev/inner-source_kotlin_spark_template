@@ -10,8 +10,8 @@ dependencies {
     compile("org.postgresql:postgresql:42.2.2")
 }
 
-fun getProperty(key: String): String {
-    return System.getProperty(key) ?: System.getenv(key)!!
+fun getProperty(key: String): String? {
+    return System.getProperty(key) ?: System.getenv(key)
 }
 
 flyway {

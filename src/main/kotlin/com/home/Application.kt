@@ -15,14 +15,14 @@ import spark.Spark.*
 import java.util.logging.Logger
 
 class Application(val controller: Controller,
+                  val sparkPort: Int = context().sparkPort,
                   val objectMapper: ObjectMapper = context().objectMapper) {
     companion object {
         val log: Logger = Logger.getLogger(this::class.java.simpleName)
     }
 
     internal fun start() {
-        //TODO: make the port configurable
-        port(4567)
+        port(sparkPort)
 
         before(Filter { _, response: Response ->
             response.type("application/json")

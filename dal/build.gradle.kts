@@ -44,8 +44,8 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-fun getProperty(key: String): String {
-    return System.getProperty(key) ?: System.getenv(key)!!
+fun getProperty(key: String): String? {
+    return System.getProperty(key) ?: System.getenv(key)
 }
 
 if (project.properties.containsKey("jooq")) {

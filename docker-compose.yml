@@ -23,7 +23,7 @@ services:
       APP_VERSION: Compose
     build:
       context: .
-    command: runShadow
+    command: ["runShadow"]
     ports:
       - 4567:4567
     depends_on:
