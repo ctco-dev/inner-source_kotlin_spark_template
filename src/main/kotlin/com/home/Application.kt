@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.home.controllers.Controller
 import com.home.domain.DataRepository
 import com.home.handlers.healthHandler
+import com.home.handlers.optionsHandler
 import com.home.handlers.readinessHandler
 import com.home.handlers.versionHandler
 import spark.Filter
@@ -23,7 +24,12 @@ class Application(val controller: Controller,
         //TODO: make the port configurable
         port(4567)
 
-        before(Filter { _, response: Response -> response.type("application/json") })
+        before(Filter { _, response: Response ->
+            response.type("application/json")
+            response.header("Access-Control-Allow-Origin", "*")
+        })
+
+        options("/*", optionsHandler)
 
         // Health, readiness and version endpoints
         get("/health", healthHandler)
