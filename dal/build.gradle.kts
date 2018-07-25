@@ -48,7 +48,7 @@ fun getProperty(key: String): String {
     return System.getProperty(key) ?: System.getenv(key)!!
 }
 
-if (project.properties.containsKey("jooqCodegen")) {
+if (project.properties.containsKey("jooq")) {
     jooqGenerator {
         configuration("primary", project.java.sourceSets.getByName("main")) {
             configuration = jooqCodegenConfiguration {

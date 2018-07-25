@@ -36,7 +36,10 @@ To perform it just do `docker-compose up -d` in your console
 * Run `./gradlew flywayMigrate`
 
 ### Generating sources for Data Access Layer
-* Run `./gradlew clean build -PjooqCodegen`
+* Run `./gradlew clean :dal:jooq-codegen-primary -Pjooq` (only re-generate sources)
+
+    **or** 
+* Run `./gradlew clean build -Pjooq` (re-generate sources and build project)
 
 ### Running application
 * Run `./gradlew runShadow` 
