@@ -77,6 +77,9 @@ application {
 tasks.withType<Test> {
     useJUnitPlatform()
     if (System.getenv("TEAMCITY_VERSION") != null) {
+        /**
+         * See: https://github.com/winterbe/jest-teamcity-reporter/blob/master/index.js on formatting specifics
+         */
 
         addTestListener(object: TestListener {
             override fun beforeSuite(suite: TestDescriptor) {
