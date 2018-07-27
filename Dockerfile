@@ -27,5 +27,7 @@ COPY src ./src
 ARG APP_VERSION_ARG
 ENV APP_VERSION=$APP_VERSION_ARG
 
+RUN ["./gradlew", "shadowJar", "--no-daemon", "--console=plain"]
+
 ENTRYPOINT ["./gradlew", "--no-daemon", "-s", "-i"]
 CMD ["--help"]
