@@ -91,5 +91,10 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 
+task("install", type = Exec::class) {
+    configurations.compile.files
+    commandLine = listOf("echo", "Downloaded all dependencies")
+}
+
 val shadowJar: ShadowJar by tasks
 shadowJar.archiveName = "app.jar"
