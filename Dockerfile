@@ -7,31 +7,25 @@ WORKDIR /usr/src/app
 ENV GRADLE_USER_HOME /opt
 COPY docker/gradle-config/ $GRADLE_USER_HOME/
 
-#
-#RUN mkdir /opt/wrapper
-#VOLUME /opt/wrapper
-#
-#RUN mkdir /opt/caches
-#VOLUME /opt/caches
-
 COPY gradle/ ./gradle
 COPY gradlew ./
 
 # Copy project sources
 COPY build.gradle.kts settings.gradle.kts ./
-COPY src ./src
-
-# Copy Database migrations sources and scripts
-COPY db ./db
 
 # Copy Data Access Layer project sources
 COPY dal ./dal
 
-ARG APP_VERSION_ARG
-ENV APP_VERSION=$APP_VERSION_ARG
-
 # Convert gradlew file to unix format
 RUN ["dos2unix", "./gradlew"]
+
+# Download all dependencies
+RUN ["./gradlew", "install"]
+
+COPY src ./src
+
+ARG APP_VERSION_ARG
+ENV APP_VERSION=$APP_VERSION_ARG
 
 ENTRYPOINT ["./gradlew", "--no-daemon", "-s", "-i"]
 CMD ["--help"]
