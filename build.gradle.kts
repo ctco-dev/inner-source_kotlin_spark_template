@@ -76,6 +76,30 @@ application {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    if (System.getenv("TEAMCITY_VERSION") != null) {
+
+        addTestListener(object: TestListener {
+            override fun beforeSuite(suite: TestDescriptor) {
+                println("testListener: $suite")
+            }
+            override fun beforeTest(testDescriptor: TestDescriptor) {
+                println("testListener: $testDescriptor")
+            }
+            override fun afterTest(testDescriptor: TestDescriptor, result: TestResult) {
+                println("testListener: $testDescriptor, $result")
+            }
+            override fun afterSuite(suite: TestDescriptor, result: TestResult) {
+                println("testListener: $suite, $result")
+            }
+        })
+
+        // Seems to work on individual tests?
+        addTestOutputListener { td: TestDescriptor, toe: TestOutputEvent ->
+            println(" testOutputLister: ${td.toString()} ${toe.toString()}")
+        }
+    } else {
+        println("oy vey")
+    }
 }
 
 java {
