@@ -12,7 +12,7 @@ fun context(): Context = Context
  */
 object Context {
     val objectMapper: ObjectMapper = ObjectMapper()
-            .registerModule(ParameterNamesModule())
+        .registerModule(ParameterNamesModule())
 
     private val dataSource: BasicDataSource
         get() {

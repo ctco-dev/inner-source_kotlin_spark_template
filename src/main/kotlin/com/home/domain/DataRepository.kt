@@ -6,8 +6,8 @@ import java.util.concurrent.ConcurrentHashMap
 
 object DataRepository {
     private val store: MutableMap<Long, Data> = ConcurrentHashMap(hashMapOf(
-            1L to Data(1L, "first"),
-            2L to Data(2L, "second")
+        1L to Data(1L, "first"),
+        2L to Data(2L, "second")
     ))
 
     fun update(data: Data): Unit {

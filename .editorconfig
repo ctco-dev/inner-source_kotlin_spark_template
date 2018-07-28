@@ -1,0 +1,17 @@
+[*]
+charset=utf-8
+indent_style=space
+indent_size=4
+
+[*.java]
+indent_size=4
+
+[*.sh]
+end_of_line=lf
+indent_size=2
+
+[*.sql]
+indent_size=2
+
+[*.kts]
+indent_size=2
