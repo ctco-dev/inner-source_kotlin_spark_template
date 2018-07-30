@@ -57,7 +57,7 @@ dependencies {
 
     compile(group = "org.apache.commons", name = "commons-dbcp2", version = "2.4.0")
 
-    compile(group = "com.typesafe", name = "config", version = "1.3.3")
+  compile(group = "com.typesafe", name = "config", version = "1.3.3")
 
     testCompile(kotlin("stdlib", kotlinVersion))
     testImplementation(group = "org.junit", name = "junit-bom", version = junitVersion)
@@ -92,8 +92,8 @@ tasks.withType<KotlinCompile> {
 }
 
 task("install", type = Exec::class) {
-    configurations.compile.files
-    commandLine = listOf("echo", "Downloaded all dependencies")
+  configurations.compile.files
+  commandLine = listOf("echo", "Downloaded all dependencies")
 }
 
 val shadowJar: ShadowJar by tasks

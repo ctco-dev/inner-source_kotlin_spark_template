@@ -11,7 +11,7 @@ dependencies {
 }
 
 fun getProperty(key: String): String? {
-    return System.getProperty(key) ?: System.getenv(key)
+  return System.getProperty(key) ?: System.getenv(key)
 }
 
 flyway {
