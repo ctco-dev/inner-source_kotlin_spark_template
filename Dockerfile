@@ -20,14 +20,15 @@ COPY dal ./dal
 RUN ["dos2unix", "./gradlew"]
 
 # Download all dependencies
-RUN ["./gradlew", "install"]
+RUN ["./gradlew", "install", "--no-daemon"]
 
 COPY src ./src
 
 ARG APP_VERSION_ARG
 ENV APP_VERSION=$APP_VERSION_ARG
 
-RUN ["./gradlew", "shadowJar", "--no-daemon", "--console=plain"]
+ARG TEAMCITY_VERSION
+RUN ["./gradlew", "clean", "test", "shadowJar", "--no-daemon", "--console=plain"]
 
 ENTRYPOINT ["./gradlew", "--no-daemon", "-s", "-i"]
 CMD ["--help"]
