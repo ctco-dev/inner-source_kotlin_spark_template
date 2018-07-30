@@ -1,31 +1,29 @@
 import kotlin.collections.listOf
+import com.rohanprabhu.gradle.plugins.kdjooq.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val kotlinVersion = "1.2.51"
 val jooqVersion = "3.11.0"
-
-val junitVersion = "5.2.0"
+val postgreVersion = "42.2.2"
 
 base {
     archivesBaseName = "spark-web-example"
 }
 
 plugins {
-    distribution
+    `java-library`
+    id("com.rohanprabhu.kotlin-dsl-jooq") version "0.3.1"
     kotlin("jvm")
 }
 
 dependencies {
-    compile(group = "org.postgresql", name = "postgresql", version = "42.2.2")
+    compile(kotlin("stdlib", kotlinVersion))
     compile(group = "org.jooq", name = "jooq", version = jooqVersion)
+    compile(group = "org.postgresql", name = "postgresql", version = postgreVersion)
 
-    testCompile(group = "org.jooq", name = "jooq-meta", version = jooqVersion)
-    testCompile(group = "org.jooq", name = "jooq-codegen", version = jooqVersion)
-    testCompile(group = "org.junit", name = "junit-bom", version = junitVersion)
-    testImplementation(group = "org.junit", name = "junit-bom", version = junitVersion)
-    testCompile(kotlin("stdlib", kotlinVersion))
-    testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api")
-    testRuntimeOnly(group = "org.junit.jupiter", name = "junit-jupiter-engine")
+    jooqGeneratorRuntime(group = "org.jooq", name = "jooq-meta", version = jooqVersion)
+    jooqGeneratorRuntime(group = "org.jooq", name = "jooq-codegen", version = jooqVersion)
+    jooqGeneratorRuntime(group = "org.postgresql", name = "postgresql", version = postgreVersion)
 }
 
 tasks.withType<Test> {
@@ -46,6 +44,34 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-fun getProperty(key: String): String {
-    return System.getProperty(key) ?: System.getenv(key)!!
+fun getProperty(key: String): String? {
+    return System.getProperty(key) ?: System.getenv(key)
+}
+
+if (project.properties.containsKey("jooq")) {
+    jooqGenerator {
+        configuration("primary", project.java.sourceSets.getByName("main")) {
+            configuration = jooqCodegenConfiguration {
+                jdbc = jdbc {
+                    url = getProperty("DB_URL")
+                    username = getProperty("DB_USERNAME")
+                    password = getProperty("DB_PASSWORD")
+                    driver = "org.postgresql.Driver"
+                    schema = "public"
+                }
+
+                generator = generator {
+                    database = database {
+                        excludes = "flyway_schema_history"
+                        schemaVersionProvider = "select max(version) from flyway_schema_history"
+                    }
+
+                    target = target {
+                        packageName = "com.home.jooq"
+                        directory = "${project.projectDir}/src/main/java"
+                    }
+                }
+            }
+        }
+    }
 }

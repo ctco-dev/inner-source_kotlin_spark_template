@@ -57,6 +57,8 @@ dependencies {
 
     compile(group = "org.apache.commons", name = "commons-dbcp2", version = "2.4.0")
 
+    compile(group = "com.typesafe", name = "config", version = "1.3.3")
+
     testCompile(kotlin("stdlib", kotlinVersion))
     testImplementation(group = "org.junit", name = "junit-bom", version = junitVersion)
     testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api")
@@ -89,11 +91,10 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 
+task("install", type = Exec::class) {
+    configurations.compile.files
+    commandLine = listOf("echo", "Downloaded all dependencies")
+}
+
 val shadowJar: ShadowJar by tasks
 shadowJar.archiveName = "app.jar"
-
-val runShadow: JavaJarExec = tasks["runShadow"] as JavaJarExec
-runShadow.environment.putAll(envProps)
-
-val test: Test = tasks["test"] as Test
-test.environment.putAll(envProps)

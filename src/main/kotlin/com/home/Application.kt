@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.home.controllers.Controller
 import com.home.domain.DataRepository
 import com.home.handlers.healthHandler
+import com.home.handlers.optionsHandler
 import com.home.handlers.readinessHandler
 import com.home.handlers.versionHandler
 import spark.Filter
@@ -14,16 +15,22 @@ import spark.Spark.*
 import java.util.logging.Logger
 
 class Application(val controller: Controller,
+                  val sparkPort: Int = context().sparkPort,
+                  val allowOrigin: String = context().allowOrigin,
                   val objectMapper: ObjectMapper = context().objectMapper) {
     companion object {
         val log: Logger = Logger.getLogger(this::class.java.simpleName)
     }
 
     internal fun start() {
-        //TODO: make the port configurable
-        port(4567)
+        port(sparkPort)
 
-        before(Filter { _, response: Response -> response.type("application/json") })
+        before(Filter { _, response: Response ->
+            response.type("application/json")
+            response.header("Access-Control-Allow-Origin", allowOrigin)
+        })
+
+        options("/*", optionsHandler)
 
         // Health, readiness and version endpoints
         get("/health", healthHandler)

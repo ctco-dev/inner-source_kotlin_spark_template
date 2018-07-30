@@ -1,15 +1,5 @@
 ## Workspace preparation
 
-### All
-You need to have a file named `.env` in the root directory, containing the following properties: 
-```properties
-DB_URL=jdbc:postgresql://hostname.of.remote.docker.host:5432/postgres
-DB_USERNAME=postgres
-DB_PASSWORD=example
-```
-
-There's a `sample.env` file in the root directory to serve as inspiration source.
-
 ### If using a remote shared `DOCKER_HOST`
 In such case you should create a `docker-compose.override.yml` file in the root directory. Consult you environment's Wiki on how to do it.
 
@@ -32,5 +22,34 @@ To perform it just do `docker-compose up -d` in your console
 
 ## Development mode
 
-* Reinitialize gradle project in your IDE to generate sources for Data Access Layer `dal` or build:
-`./gradlew build`
+### Build configuration
+If you need to apply Flyway migration and / or run jOOQ codegen, you need to have a file named `.env` in the root directory, containing the following properties: 
+```properties
+DB_URL=jdbc:postgresql://hostname.of.remote.docker.host:5432/postgres
+DB_USERNAME=postgres
+DB_PASSWORD=example
+```
+
+There's a `sample.env` file in the root directory to serve as inspiration source.
+
+### Applying Flyway migrations
+* Run `./gradlew flywayMigrate`
+
+### Generating sources for Data Access Layer
+* Run `./gradlew clean :dal:jooq-codegen-primary -Pjooq` (only re-generate sources)
+
+    **or** 
+* Run `./gradlew clean build -Pjooq` (re-generate sources and build project)
+
+### Running application
+* Run `./gradlew runShadow` 
+
+## Runtime configuration 
+
+We're using the [Lightbend Config](https://github.com/lightbend/config) for the runtime configuration, so you can always consult their docs in case on how value overriding or substitution work
+
+The app sources contain the `reference.conf` file holding all the configuration options we expect and their default values. 
+
+Values from `reference.conf` are overridden with value found in a file `application.{conf | json | properties}`
+
+And values from environment variables override all options above (as is done in `docker-compose.yml`).

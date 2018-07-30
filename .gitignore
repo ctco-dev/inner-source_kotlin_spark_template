@@ -12,3 +12,5 @@ dal/build
 docker-compose.override.yml
 /docker/gradle-config/init.gradle
 /docker/gradle-config/gradle.properties
+
+src/main/resources/application.*
