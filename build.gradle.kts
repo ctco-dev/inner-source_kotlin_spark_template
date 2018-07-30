@@ -85,7 +85,9 @@ tasks.withType<Test> {
          */
         addTestListener(object: TestListener {
             private fun teamCityEscape(s: String) : String {
-                return s.replace("'", "|n").
+                return s.replace("'", "|'").
+                        replace("\n", "|n").
+                        replace("\r", "|r").
                         replace("[", "|[").
                         replace("]", "|]")
             }
