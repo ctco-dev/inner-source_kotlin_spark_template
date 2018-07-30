@@ -24,8 +24,8 @@ class DataRepositoryTest {
         val fst = Data(1L, "first")
         val snd = Data(2L, "second")
         assertAll(
-            { assertEquals(fst, instance.read(1L)) },
-            { assertEquals(snd, instance.read(2L)) }
+                { assertEquals(fst, instance.read(1L)) },
+                { assertEquals(snd, instance.read(2L)) }
         )
     }
 

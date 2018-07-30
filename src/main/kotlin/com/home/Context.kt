@@ -3,7 +3,6 @@ package com.home
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule
 import com.home.integration.DataBaseClient
-import com.typesafe.config.ConfigFactory
 import org.apache.commons.dbcp2.BasicDataSource
 
 fun context(): Context = Context
@@ -20,7 +19,7 @@ object Context {
     val allowOrigin: String = settings.allowOrigin
 
     val objectMapper: ObjectMapper = ObjectMapper()
-        .registerModule(ParameterNamesModule())
+            .registerModule(ParameterNamesModule())
 
     private val dataSource: BasicDataSource
         get() {

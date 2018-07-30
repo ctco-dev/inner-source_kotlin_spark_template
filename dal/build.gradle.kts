@@ -7,18 +7,18 @@ val jooqVersion = "3.11.0"
 val postgreVersion = "42.2.2"
 
 base {
-    archivesBaseName = "spark-web-example"
+  archivesBaseName = "spark-web-example"
 }
 
 plugins {
   `java-library`
   id("com.rohanprabhu.kotlin-dsl-jooq") version "0.3.1"
-    kotlin("jvm")
+  kotlin("jvm")
 }
 
 dependencies {
   compile(kotlin("stdlib", kotlinVersion))
-    compile(group = "org.jooq", name = "jooq", version = jooqVersion)
+  compile(group = "org.jooq", name = "jooq", version = jooqVersion)
   compile(group = "org.postgresql", name = "postgresql", version = postgreVersion)
 
   jooqGeneratorRuntime(group = "org.jooq", name = "jooq-meta", version = jooqVersion)
@@ -27,21 +27,21 @@ dependencies {
 }
 
 tasks.withType<Test> {
-    useJUnitPlatform()
+  useJUnitPlatform()
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+  sourceCompatibility = JavaVersion.VERSION_1_8
+  targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 tasks.withType<JavaCompile> {
-    options.compilerArgs.add("-parameters")
+  options.compilerArgs.add("-parameters")
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.javaParameters = true
-    kotlinOptions.jvmTarget = "1.8"
+  kotlinOptions.javaParameters = true
+  kotlinOptions.jvmTarget = "1.8"
 }
 
 fun getProperty(key: String): String? {

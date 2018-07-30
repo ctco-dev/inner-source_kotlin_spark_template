@@ -18,8 +18,8 @@ class ControllerTest {
     @BeforeEach
     internal fun setUp() {
         controller = Controller(
-            repository = DataRepository,
-            dataBaseClient = mock(DataBaseClient::class.java)
+                repository = DataRepository,
+                dataBaseClient = mock(DataBaseClient::class.java)
         )
     }
 
@@ -27,7 +27,7 @@ class ControllerTest {
     fun `test getData`() {
         val mockRequest = mock(Request::class.java)
         `when`(mockRequest.params("id"))
-            .thenReturn("1")
+                .thenReturn("1")
 
         val mockResponse = mock(Response::class.java)
 
