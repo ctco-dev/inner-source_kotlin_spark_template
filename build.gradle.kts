@@ -1,6 +1,7 @@
 import com.github.jengelman.gradle.plugins.shadow.internal.JavaJarExec
 import kotlin.collections.listOf
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import org.gradle.api.tasks.testing.TestResult.ResultType.*
 import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.util.Properties
@@ -75,7 +76,43 @@ application {
 }
 
 tasks.withType<Test> {
-  useJUnitPlatform()
+
+    useJUnitPlatform()
+
+    if (!System.getenv("TEAMCITY_VERSION").isNullOrBlank()) {
+        /**
+         * See: https://github.com/winterbe/jest-teamcity-reporter/blob/master/index.js as inspiration source
+         * See: https://confluence.jetbrains.com/display/TCD18/Build+Script+Interaction+with+TeamCity for formatting specifics
+         */
+        addTestListener(object: TestListener {
+            private fun teamCityEscape(s: String) : String {
+                return s.replace("'", "|'").
+                        replace("\n", "|n").
+                        replace("\r", "|r").
+                        replace("[", "|[").
+                        replace("]", "|]")
+            }
+            override fun beforeSuite(suite: TestDescriptor) {
+                println("##teamcity[testSuiteStarted name='${teamCityEscape(suite.name)}']")
+            }
+            override fun beforeTest(testDescriptor: TestDescriptor) {
+                println("##teamcity[testStarted name='${teamCityEscape(testDescriptor.name)}']")
+            }
+            override fun afterTest(testDescriptor: TestDescriptor, result: TestResult) {
+                val escapedTestName = teamCityEscape(testDescriptor.name)
+                when (result.resultType) {
+                    FAILURE -> println("##teamcity[testFailed name='$escapedTestName' message='FAILED' " +
+                            "details='${teamCityEscape(result.exceptions.toString())}']")
+                    SKIPPED -> println("##teamcity[testIgnored name='$escapedTestName' message='${result.resultType}']")
+                    else -> {} // TC assumes the test is successful
+                }
+                println("##teamcity[testFinished name='$escapedTestName' duration='${result.endTime - result.startTime}']")
+            }
+            override fun afterSuite(suite: TestDescriptor, result: TestResult) {
+                println("##teamcity[testSuiteFinished name='${teamCityEscape(suite.name)}' duration='${result.endTime - result.startTime}']")
+            }
+        })
+    }
 }
 
 java {
